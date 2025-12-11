@@ -217,7 +217,7 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
           {/* Fulltime Score Marker */}
           <div className="relative flex items-center justify-center py-3 mb-4">
             <div className="absolute left-0 right-0 h-0.5 bg-[#2A2A2A]" />
-            <div className="relative z-10 bg-[#181921] px-4">
+            <div className="relative z-10 bg-[#1d1e2b] px-4">
               <span className="text-[#FFFFFF] text-sm font-medium">Fulltime {homeScore} - {awayScore}</span>
             </div>
           </div>
@@ -230,7 +230,7 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
           {/* Halftime Score Marker */}
           <div className="relative flex items-center justify-center py-3 my-4">
             <div className="absolute left-0 right-0 h-0.5 bg-[#2A2A2A]" />
-            <div className="relative z-10 bg-[#181921] px-4">
+            <div className="relative z-10 bg-[#1d1e2b] px-4">
               <span className="text-[#FFFFFF] text-sm font-medium">Halftime 1 - 0</span>
             </div>
           </div>
@@ -243,7 +243,7 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
           {/* Kick Off Marker */}
           <div className="relative flex items-center justify-center py-3 mt-4">
             <div className="absolute left-0 right-0 h-0.5 bg-[#2A2A2A]" />
-            <div className="relative z-10 bg-[#181921] px-4">
+            <div className="relative z-10 bg-[#1d1e2b] px-4">
               <span className="text-[#FFFFFF] text-sm font-medium">Kick Off -13:00</span>
             </div>
           </div>
