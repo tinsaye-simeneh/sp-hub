@@ -25,12 +25,13 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({ match }) => {
         <div className="flex flex-col items-center gap-2 flex-1 relative">
           <div className="relative">
             {match.homeTeamCards?.yellow && match.homeTeamCards.yellow > 0 && (
-              <div className="absolute -top-3 -right-5 w-5 h-5 bg-[#FFD700] flex items-center justify-center z-10">
+              <div className="absolute -top-5 -right-5 w-5 h-5 bg-[#FFD700] flex items-center justify-center z-10">
                 <span className="text-black text-[10px] font-bold">{match.homeTeamCards.yellow}</span>
               </div>
             )}
-            {match.homeTeamCards?.red && match.homeTeamCards.red > 0 && (
-              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 -translate-y-6 w-5 h-5 bg-[#FF0000] flex items-center justify-center z-10">
+
+            {typeof match.homeTeamCards?.red === 'number' && match.homeTeamCards.red > 0 && (
+              <div className="absolute -top-3 -right-5 w-5 h-5 bg-[#FF0000] flex items-center justify-center z-10">
                 <span className="text-black text-[10px] font-bold">{match.homeTeamCards.red}</span>
               </div>
             )}

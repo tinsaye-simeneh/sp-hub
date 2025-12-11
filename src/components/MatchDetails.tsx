@@ -31,6 +31,14 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
       name: 'Liverpool',
       score: 1,
     },
+    homeTeamCards: {
+      yellow: 2,
+      red: 0,
+    },
+    awayTeamCards: {
+      yellow: 1,
+      red: 1,
+    },
     date: '11 AUG',
   };
 
