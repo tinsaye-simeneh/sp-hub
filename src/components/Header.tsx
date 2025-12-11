@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from '../../public/logo.png';
 import globe from '../../public/globe.png';
 import ball from '../../public/ball.png';
@@ -8,13 +8,14 @@ import eg from '../../public/eg.png';
 const Header: React.FC = () => {
   const navItems = ['Live', 'Matches', 'Standings', 'Teams', 'Comparison', 'Statistics', 'Venues'];
   const activeTab = 'Matches';
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <header className="bg-[#6D00FF] border-b border-[#2A2A2A] w-screen top-0 sticky z-50">
       <div className="max-w-[1440px] mx-auto px-4 py-1">
         <div className="flex items-center justify-between">
           <div>
-            <img src={logo} alt="logo" className="w-[200px] h-[60px]" />
+            <img src={logo} alt="logo" className="w-[82px] md:w-[200px] h-auto md:h-[60px]" />
           </div>
 
           <nav className="hidden md:flex items-center gap-1 flex-1 justify-center">
@@ -43,11 +44,11 @@ const Header: React.FC = () => {
               <img src={ball} alt="ball" className="w-[24px] h-[24px]" />
             </button>
 
-            <div className="w-[206px] h-[40px] py-2 px-4 rounded-full bg-[#00000026] flex items-center gap-1 overflow-hidden hover:bg-[rgba(0,0,0,0.8)] transition-colors">
+            <div className="w-auto md:w-[206px] h-[40px] py-2 px-2 md:px-4 rounded-full bg-[#00000026] flex items-center gap-1 overflow-hidden hover:bg-[rgba(0,0,0,0.8)] transition-colors">
               <img src={pl} alt="premier league" className="w-[16px] h-[16px] flex-shrink-0" />
               <select 
                 title="premier league" 
-                className="bg-transparent text-[#FFFFFF] text-base border-none outline-none cursor-default pr-3"
+                className="bg-transparent text-[#FFFFFF] text-base border-none outline-none cursor-default pr-3 hidden md:block"
                 onMouseDown={(e) => e.preventDefault()}
               >
                 <option>Premier League</option>
@@ -64,9 +65,63 @@ const Header: React.FC = () => {
               </select>
             </div>
 
-            <button className="w-[40px] h-[40px] px-1 rounded-full bg-[#00000026] hover:bg-[#00000040] transition-colors flex items-center justify-center">
+            <button className="hidden md:flex w-[40px] h-[40px] px-1 rounded-full bg-[#00000026] hover:bg-[#00000040] transition-colors items-center justify-center">
               <img src={eg} alt="flag" className="w-[24px] h-[24px]" />
             </button>
+
+            {/* Hamburger Menu Button - Mobile Only */}
+            <div className="relative md:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="w-[40px] h-[40px] px-1 transition-colors flex items-center justify-center ml-2"
+                aria-label="Menu"
+              >
+                <svg
+                  className="w-6 h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  {isMenuOpen ? (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  ) : (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  )}
+                </svg>
+              </button>
+
+              {/* Dropdown Menu - Mobile Only */}
+              {isMenuOpen && (
+                <div className="absolute right-0 top-full mt-2 w-48 bg-[#1D1E2B] rounded-lg shadow-lg border border-[#2A2A2A] py-2 z-50">
+                  {navItems.map((item) => (
+                    <a
+                      key={item}
+                      href="#"
+                      onClick={() => setIsMenuOpen(false)}
+                      className={`block px-4 py-2 text-sm transition-colors ${
+                        item === activeTab
+                          ? 'text-[#00FFA5] bg-[#1D1E2B]'
+                          : item === 'Standings'
+                          ? 'text-[#CAC4D0] hover:text-[#FFFFFF] hover:bg-[#252525]'
+                          : 'text-[#FFFFFF] hover:bg-[#252525]'
+                      }`}
+                    >
+                      {item}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

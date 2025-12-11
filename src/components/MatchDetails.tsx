@@ -209,7 +209,7 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
   };
 
   return (
-    <div className="text-[#FFFFFF] w-[707px] bg-[#1D1E2B] rounded-lg mx-auto px-5 pt-5">
+    <div className="text-[#FFFFFF] w-full xl:w-[707px] bg-[#1D1E2B] rounded-lg xl:mx-auto px-5 pt-5">
       <h2 className="text-lg font-medium mb-3 ml-6">Events</h2>
       
       <div className="relative pb-8">
@@ -337,8 +337,8 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
 
   return (
     <div className="bg-[#181921]">
-      <div className="max-w-[820px] mx-auto pt-10">
-      <div className="xl:w-[707px] bg-[#1D1E2B] rounded-t-lg mx-auto">
+      <div className="w-full xl:max-w-[820px] xl:mx-auto pt-10">
+      <div className="w-full xl:w-[707px] bg-[#1D1E2B] rounded-t-lg xl:mx-auto">
         {/* Header with back button and league name */}
         <div className="flex items-center gap-4 px-4 py-4 border-b border-[#2A2A2A]">
           <button
@@ -351,7 +351,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
         </div>
 
         {/* Match Summary Card */}
-        <div className="px-4 py-6 w-[680px] mx-auto">
+        <div className="px-4 py-6 w-full xl:w-[680px] xl:mx-auto">
           <div className="flex items-center justify-between">
             {/* Home Team */}
             <div className="flex flex-col items-center gap-2 flex-1 relative">
