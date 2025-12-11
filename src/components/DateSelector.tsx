@@ -1,7 +1,11 @@
 import React from 'react';
 import { calendar, chevronLeft, chevronRight } from '../assets';
 
-const DateSelector: React.FC = () => {
+interface DateSelectorProps {
+  onDateChange?: (date: string | undefined) => void;
+}
+
+const DateSelector: React.FC<DateSelectorProps> = ({ onDateChange: _onDateChange }) => {
   return (
     <>
       <div className="hidden md:flex items-center justify-center mb-6">

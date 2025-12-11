@@ -4,9 +4,18 @@ import { live } from '../assets';
 interface FilterButtonsProps {
   activeFilter: 'all' | 'live' | 'favorites';
   onFilterChange: (filter: 'all' | 'live' | 'favorites') => void;
+  allCount?: number;
+  liveCount?: number;
+  favoritesCount?: number;
 }
 
-const FilterButtons: React.FC<FilterButtonsProps> = ({ activeFilter, onFilterChange }) => {
+const FilterButtons: React.FC<FilterButtonsProps> = ({ 
+  activeFilter, 
+  onFilterChange,
+  allCount = 0,
+  liveCount = 0,
+  favoritesCount = 0,
+}) => {
   return (
     <div className="flex items-center gap-2 md:gap-3 mb-6 w-full md:w-[328px] md:mr-auto h-[36px]">
       <button
@@ -18,8 +27,8 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({ activeFilter, onFilterCha
         }`}
       >
         <span className="text-black text-[14px] font-medium">All</span>
-        <span className="px-1 w-[16px] h-[16px] text-[12px] rounded-full bg-bg-primary">
-          6
+        <span className="px-1 min-w-[16px] h-[16px] text-[12px] rounded-full bg-bg-primary flex items-center justify-center">
+          {allCount}
         </span>
       </button>
 
@@ -33,8 +42,8 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({ activeFilter, onFilterCha
       >
         <img src={live} alt="live" className="w-[20px] h-[20px]" />
         <span className="text-text-primary text-[14px] font-medium group-hover:text-yellow-400 transition-colors">Live</span>
-        <span className="px-1 py-0.5 rounded-full text-[12px] bg-bg-primary">
-          <span className="text-text-primary text-[12px] font-medium group-hover:text-yellow-400 transition-colors">4</span>
+        <span className="px-1 py-0.5 min-w-[16px] rounded-full text-[12px] bg-bg-primary flex items-center justify-center">
+          <span className="text-text-primary text-[12px] font-medium group-hover:text-yellow-400 transition-colors">{liveCount}</span>
         </span>
       </button>
 
@@ -50,8 +59,8 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({ activeFilter, onFilterCha
           <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
         </svg>
         <span className="text-text-primary text-[14px] font-medium group-hover:text-yellow-400 transition-colors">Favorites</span>
-        <span className="px-1 w-[16px] h-[16px] text-[12px] rounded-full bg-bg-primary">
-          <span className="text-text-primary text-[12px] font-medium group-hover:text-yellow-400 transition-colors">2</span>
+        <span className="px-1 min-w-[16px] h-[16px] text-[12px] rounded-full bg-bg-primary flex items-center justify-center">
+          <span className="text-text-primary text-[12px] font-medium group-hover:text-yellow-400 transition-colors">{favoritesCount}</span>
         </span>
       </button>
     </div>

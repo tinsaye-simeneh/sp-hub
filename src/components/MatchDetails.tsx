@@ -4,7 +4,10 @@ import { Match } from '../types/match';
 import EventsTimeline from './EventsTimeline';
 import MatchSummary from './MatchSummary';
 import TabNavigation from './TabNavigation';
-import { mockEvents } from '../data/mockEvents';
+import MatchDetailsTab from './MatchDetailsTab';
+import MatchLineupsTab from './MatchLineupsTab';
+import Loader from './Loader';
+import { useMatchDetails } from '../hooks/useMatchDetails';
 import { arrowLeft } from '../assets';
 
 interface MatchDetailsProps {
@@ -18,31 +21,28 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
   const { id } = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState<'Details' | 'Odds' | 'Lineups' | 'Events' | 'Stats' | 'Standings'>('Events');
 
+  const { match: apiMatch, events: apiEvents, loading, error } = useMatchDetails(id);
+
   const matchFromState = (location.state as { match?: Match })?.match;
-  const matchData: Match = match || matchFromState || {
+  const matchData: Match = apiMatch || match || matchFromState || {
     id: id || '1',
     status: 'ft',
     statusText: 'FT',
     homeTeam: {
-      name: 'Arsenal',
-      score: 2,
+      name: 'Loading...',
+      score: 0,
     },
     awayTeam: {
-      name: 'Liverpool',
-      score: 1,
+      name: 'Loading...',
+      score: 0,
     },
-    homeTeamCards: {
-      yellow: 2,
-      red: 0,
-    },
-    awayTeamCards: {
-      yellow: 1,
-      red: 1,
-    },
-    date: '11 AUG',
+    date: new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short' }).toUpperCase(),
   };
 
-
+  const displayEvents = apiEvents.length > 0 ? apiEvents : [];
+  
+  // Get league name from API match if available
+  const displayLeagueName = apiMatch?.league || leagueName;
 
   return (
     <div className="bg-[#181921]">
@@ -55,7 +55,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
           >
             <img src={arrowLeft} alt="back" className="w-[24px] h-[24px]" />
           </button>
-          <h1 className="text-text-primary text-lg font-medium">{leagueName}</h1>
+          <h1 className="text-text-primary text-lg font-medium">{displayLeagueName}</h1>
         </div>
 
         <MatchSummary match={matchData} />
@@ -64,17 +64,29 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
         </div>
 
         <div className="px-4 py-6">
-          {activeTab === 'Events' && (
-            <EventsTimeline
-              events={mockEvents}
-              homeScore={matchData.homeTeam.score ?? 0}
-              awayScore={matchData.awayTeam.score ?? 0}
-            />
-          )}
-          {activeTab === 'Details' && (
-            <div className="text-text-primary">
-              <p className="text-sm text-text-secondary">Match details will be displayed here</p>
+          {loading && (
+            <div className="flex items-center justify-center py-12">
+              <Loader size="lg" />
             </div>
+          )}
+
+          {error && (
+            <div className="flex items-center justify-center py-12">
+              <div className="text-status-error">Error: {error}</div>
+            </div>
+          )}
+
+          {!loading && !error && (
+            <>
+              {activeTab === 'Events' && (
+                <EventsTimeline
+                  events={displayEvents}
+                  homeScore={matchData.homeTeam.score ?? 0}
+                  awayScore={matchData.awayTeam.score ?? 0}
+                />
+              )}
+          {activeTab === 'Details' && (
+            <MatchDetailsTab match={matchData} />
           )}
           {activeTab === 'Odds' && (
             <div className="text-text-primary">
@@ -82,19 +94,19 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
             </div>
           )}
           {activeTab === 'Lineups' && (
-            <div className="text-text-primary">
-              <p className="text-sm text-text-secondary">Lineups will be displayed here</p>
-            </div>
+            <MatchLineupsTab match={matchData} />
           )}
           {activeTab === 'Stats' && (
             <div className="text-text-primary">
               <p className="text-sm text-text-secondary">Statistics will be displayed here</p>
             </div>
           )}
-          {activeTab === 'Standings' && (
-            <div className="text-text-primary">
-              <p className="text-sm text-text-secondary">Standings will be displayed here</p>
-            </div>
+              {activeTab === 'Standings' && (
+                <div className="text-text-primary">
+                  <p className="text-sm text-text-secondary">Standings will be displayed here</p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

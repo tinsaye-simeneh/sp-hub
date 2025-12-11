@@ -29,6 +29,29 @@ export interface Match {
     penalty?: 'home' | 'away';
     redCard?: 'home' | 'away';
   };
+  // Additional details from API
+  league?: string;
+  venue?: string;
+  city?: string;
+  country?: string;
+  homeFormation?: string;
+  awayFormation?: string;
+  homeShots?: number;
+  awayShots?: number;
+  homeLineup?: {
+    goalkeeper?: string[];
+    defense?: string[];
+    midfield?: string[];
+    forward?: string[];
+    substitutes?: string[];
+  };
+  awayLineup?: {
+    goalkeeper?: string[];
+    defense?: string[];
+    midfield?: string[];
+    forward?: string[];
+    substitutes?: string[];
+  };
 }
 
 export interface MatchEvent {
