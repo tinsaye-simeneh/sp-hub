@@ -26,13 +26,13 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
             onClick={() => onTabChange(tab)}
             className={`px-4 py-3 text-sm font-medium transition-colors whitespace-nowrap relative ${
               activeTab === tab
-                ? 'text-brand-primary'
+                ? 'text-brand-secondary'
                 : 'text-text-secondary hover:text-text-primary'
             }`}
           >
             {tab}
             {activeTab === tab && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-primary" />
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-secondary" />
             )}
           </button>
         ))}

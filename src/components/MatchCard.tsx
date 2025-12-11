@@ -41,7 +41,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
     >
       {isLive && (
         <div 
-          className="absolute left-0 right-0 top-2 bottom-2 pointer-events-none"
+          className="absolute left-4 right-0 top-2 bottom-2 pointer-events-none"
           style={{
             background: 'linear-gradient(to right, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.1) 10%, transparent 30%)'
           }}
@@ -79,19 +79,19 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
               </div>
               <span className="text-text-primary text-sm font-medium">{match.homeTeam.name}</span>
               {match.indicators?.aggregate === 'home' && (
-                <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-bg-indicator">
-                  <svg className="w-3 h-3 text-brand-primary" fill="currentColor" viewBox="0 0 20 20">
+                <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-[#26273B]">
+                  <svg className="w-3 h-3 text-brand-secondary" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  <span className="text-brand-primary text-[8px] leading-[12px] font-medium mt-[2px]">AGG</span>
+                  <span className="text-brand-secondary text-[8px] leading-[12px] font-medium mt-[2px]">AGG</span>
                 </div>
               )}
               {match.indicators?.penalty === 'home' && (
-                <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-bg-indicator">
-                 <svg className="w-3 h-3 text-brand-primary" fill="currentColor" viewBox="0 0 20 20">
+                <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-[#26273B]">
+                 <svg className="w-3 h-3 text-brand-secondary" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  <span className="text-brand-primary text-[8px] leading-[12px] font-medium mt-[2px]">PEN</span>
+                  <span className="text-brand-secondary text-[8px] leading-[12px] font-medium mt-[2px]">PEN</span>
                 </div>
               )}
               {match.indicators?.redCard === 'home' && (
@@ -126,19 +126,19 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
               </div>
               <span className="text-text-primary text-sm font-medium">{match.awayTeam.name}</span>
               {match.indicators?.aggregate === 'away' && (
-                <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-bg-indicator">
-                  <svg className="w-3 h-3 text-brand-primary" fill="currentColor" viewBox="0 0 20 20">
+                <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-[#26273B]">
+                  <svg className="w-3 h-3 text-brand-secondary" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  <span className="text-brand-primary text-[8px] leading-[12px] font-medium mt-[2px]">AGG</span>
+                  <span className="text-brand-secondary text-[8px] leading-[12px] font-medium mt-[2px]">AGG</span>
                 </div>
               )}
               {match.indicators?.penalty === 'away' && (
-                <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-bg-indicator">
-                  <svg className="w-3 h-3 text-brand-primary" fill="currentColor" viewBox="0 0 20 20">
+                <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-[#26273B]">
+                  <svg className="w-3 h-3 text-brand-secondary" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  <span className="text-brand-primary text-[8px] leading-[12px] font-medium mt-[2px]">PEN</span>
+                  <span className="text-brand-secondary text-[8px] leading-[12px] font-medium mt-[2px]">PEN</span>
                 </div>
               )}
               {match.indicators?.redCard === 'away' && (

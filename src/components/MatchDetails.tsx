@@ -32,14 +32,6 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
       score: 1,
     },
     date: '11 AUG',
-    homeTeamCards: {
-      yellow: 2,
-      red: 0,
-    },
-    awayTeamCards: {
-      yellow: 1,
-      red: 1,
-    },
   };
 
 
@@ -47,7 +39,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
   return (
     <div className="bg-bg-primary">
       <div className="w-full xl:max-w-[820px] xl:mx-auto xl:pt-10">
-      <div className="w-full xl:w-[707px] bg-bg-secondary rounded-t-lg xl:mx-auto">
+      <div className="w-full xl:w-[707px] bg-[#1D1E2B] rounded-t-lg xl:mx-auto">
         <div className="flex items-center gap-4 px-4 py-4 border-b border-border-primary">
           <button
             onClick={() => navigate(-1)}

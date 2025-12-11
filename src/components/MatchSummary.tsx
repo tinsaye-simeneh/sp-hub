@@ -19,17 +19,25 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({ match }) => {
     return 'Scheduled';
   };
 
+  // Only show cards for finished matches
+  const shouldShowCards = match.status === 'ft';
+  const hasHomeYellow = shouldShowCards && match.homeTeamCards?.yellow !== undefined && match.homeTeamCards.yellow > 0;
+  const hasHomeRed = shouldShowCards && match.homeTeamCards?.red !== undefined && match.homeTeamCards.red > 0;
+  const hasAwayCards = shouldShowCards && match.awayTeamCards && 
+    ((match.awayTeamCards.red !== undefined && match.awayTeamCards.red > 0) || 
+     (match.awayTeamCards.yellow !== undefined && match.awayTeamCards.yellow > 0));
+
   return (
     <div className="px-4 py-6 w-full xl:w-[680px] xl:mx-auto">
       <div className="flex items-center justify-between">
         <div className="flex flex-col items-center gap-2 flex-1 relative">
           <div className="relative">
-            {match.homeTeamCards?.yellow && match.homeTeamCards.yellow > 0 && (
+            {hasHomeYellow && match.homeTeamCards && (
               <div className="absolute -top-3 -right-5 w-5 h-5 bg-card-yellow flex items-center justify-center z-10">
                 <span className="text-black text-[10px] font-bold">{match.homeTeamCards.yellow}</span>
               </div>
             )}
-            {match.homeTeamCards?.red && match.homeTeamCards.red > 0 && (
+            {hasHomeRed && match.homeTeamCards && (
               <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 -translate-y-6 w-5 h-5 bg-card-red flex items-center justify-center z-10">
                 <span className="text-black text-[10px] font-bold">{match.homeTeamCards.red}</span>
               </div>
@@ -60,14 +68,14 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({ match }) => {
               
         <div className="flex flex-col items-center gap-2 flex-1 relative">
           <div className="relative">
-            {match.awayTeamCards && (match.awayTeamCards.red > 0 || match.awayTeamCards.yellow > 0) && (
+            {hasAwayCards && match.awayTeamCards && (
               <div className="absolute -top-3 -left-10 flex flex-col gap-0.5 z-10 flex-row">
-                {match.awayTeamCards.red > 0 && (
+                {match.awayTeamCards.red !== undefined && match.awayTeamCards.red > 0 && (
                   <div className="w-5 h-5 bg-card-red flex items-center justify-center">
                     <span className="text-black text-[10px] font-bold">{match.awayTeamCards.red}</span>
                   </div>
                 )}
-                {match.awayTeamCards.yellow > 0 && (
+                {match.awayTeamCards.yellow !== undefined && match.awayTeamCards.yellow > 0 && (
                   <div className="w-5 h-5 bg-card-yellow flex items-center justify-center">
                     <span className="text-black text-[10px] font-bold">{match.awayTeamCards.yellow}</span>
                   </div>

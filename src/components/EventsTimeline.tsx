@@ -26,11 +26,11 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
         );
       case 'yellowCard':
         return (
-          <div className="w-3 h-3 bg-card-yellow opacity-70" />
+          <div className="w-3 h-3 bg-[#FFD700] opacity-70" />
         );
       case 'redCard':
         return (
-          <div className="w-3 h-3 bg-card-red opacity-60" />
+          <div className="w-3 h-3 bg-[#FF0000] opacity-60" />
         );
       case 'corner':
         return (
@@ -182,14 +182,14 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
   };
 
   return (
-    <div className="text-text-primary w-full xl:w-[707px] bg-bg-secondary rounded-lg xl:mx-auto px-5 pt-5">
+    <div className="text-text-primary w-full xl:w-[707px] bg-[#1D1E2B] rounded-lg xl:mx-auto px-5 pt-5">
       <h2 className="text-lg font-medium mb-3 ml-6">Events</h2>
       
       <div className="relative pb-8">
         <div className="flex flex-col">
           <div className="relative flex items-center justify-center py-3 mb-4">
             <div className="absolute left-0 right-0 h-0.5 bg-border-primary" />
-            <div className="relative z-10 bg-bg-secondary px-4">
+            <div className="relative z-10 bg-[#1D1E2B] px-4">
               <span className="text-text-primary text-sm font-medium">Fulltime {homeScore} - {awayScore}</span>
             </div>
           </div>
@@ -200,7 +200,7 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
 
           <div className="relative flex items-center justify-center py-3 my-4">
             <div className="absolute left-0 right-0 h-0.5 bg-border-primary" />
-            <div className="relative z-10 bg-bg-secondary px-4">
+            <div className="relative z-10 bg-[#1D1E2B] px-4">
               <span className="text-text-primary text-sm font-medium">Halftime 1 - 0</span>
             </div>
           </div>
@@ -211,7 +211,7 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
 
           <div className="relative flex items-center justify-center py-3 mt-4">
             <div className="absolute left-0 right-0 h-0.5 bg-border-primary" />
-            <div className="relative z-10 bg-bg-secondary px-4">
+                <div className="relative z-10 bg-[#1D1E2B] px-4">
               <span className="text-text-primary text-sm font-medium">Kick Off -13:00</span>
             </div>
           </div>
