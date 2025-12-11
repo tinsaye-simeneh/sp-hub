@@ -23,10 +23,10 @@ const DateSelector: React.FC<DateSelectorProps> = ({ onDateChange: _onDateChange
         </div>
       </div>
 
-      <div className="md:hidden mb-6">
-        <div className="flex items-center gap-3">
-          <div className="flex-1 overflow-x-auto scrollbar-hide">
-            <div className="flex items-center gap-8 pr-4 min-w-max">
+      <div className="md:hidden mb-6 w-full overflow-x-hidden">
+        <div className="flex items-center gap-3 w-full">
+          <div className="flex-1 overflow-x-auto scrollbar-hide max-w-full">
+            <div className="flex items-center gap-8 pr-4">
               <div className="flex flex-col items-center leading-tight opacity-30">
                 <span className="text-text-secondary text-[14px] font-medium tracking-wide">WED</span>
                 <span className="text-text-secondary text-[14px] font-medium">AUG</span>

@@ -182,7 +182,7 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
   };
 
   return (
-    <div className="text-text-primary w-full xl:w-[707px] bg-[#1D1E2B] rounded-lg xl:mx-auto px-5 pt-5">
+    <div className="text-text-primary w-full max-w-[707px] bg-[#1D1E2B] rounded-lg mx-auto px-5 pt-5">
       <h2 className="text-lg font-medium mb-3 ml-6">Events</h2>
       
       <div className="relative pb-8">

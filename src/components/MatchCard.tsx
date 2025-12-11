@@ -36,7 +36,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
 
   return (
     <div 
-      className="w-full max-w-[788px] h-auto min-h-[80px] border-b border-border-primary relative cursor-pointer hover:bg-bg-hover transition-colors"
+      className="w-full max-w-[788px] mx-auto h-auto min-h-[80px] border-b border-border-primary relative cursor-pointer hover:bg-bg-hover transition-colors"
       onClick={handleMatchClick}
     >
       {isLive && (

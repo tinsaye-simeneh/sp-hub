@@ -90,7 +90,7 @@ const MatchesDashboard: React.FC = () => {
   const error = activeFilter === 'live' ? liveError : allError;
 
   return (
-    <div className="bg-[#181921]">
+    <div className="bg-[#181921] min-h-screen w-full overflow-x-hidden">
       <div className="w-full max-w-[820px] mx-auto px-4 py-6">
         <h1 className="text-xl md:text-2xl font-bold text-text-primary mb-6">Matches</h1>
 
@@ -105,7 +105,7 @@ const MatchesDashboard: React.FC = () => {
         />
 
         {loading && (
-          <div className="flex items-center justify-center py-12">
+          <div className="flex items-center justify-center min-h-[calc(100vh-200px)] w-full bg-[#181921] -mx-4 px-4">
             <Loader size="lg" />
           </div>
         )}
