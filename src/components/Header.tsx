@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import logo from '../../public/logo.png';
-import globe from '../../public/globe.png';
-import ball from '../../public/ball.png';
-import pl from '../../public/pl.png';
-import eg from '../../public/eg.png';
+import { logo, globe, ball, pl, eg } from '../assets';
 
 const Header: React.FC = () => {
   const navItems = ['Live', 'Matches', 'Standings', 'Teams', 'Comparison', 'Statistics', 'Venues'];
@@ -68,8 +64,7 @@ const Header: React.FC = () => {
             <button className="hidden md:flex w-[40px] h-[40px] px-1 rounded-full bg-[#00000026] hover:bg-[#00000040] transition-colors items-center justify-center">
               <img src={eg} alt="flag" className="w-[24px] h-[24px]" />
             </button>
-
-            {/* Hamburger Menu Button - Mobile Only */}
+            
             <div className="relative md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}

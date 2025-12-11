@@ -1,38 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-export interface Match {
-  id: string;
-  status: 'live' | 'ft' | 'ht' | 'scheduled';
-  statusText: string;
-  homeTeam: {
-    name: string;
-    logo?: string;
-    score?: number;
-    aggregateScore?: number;
-  };
-  awayTeam: {
-    name: string;
-    logo?: string;
-    score?: number;
-    aggregateScore?: number;
-  };
-  time?: string;
-  date?: string;
-  homeTeamCards?: {
-    yellow: number;
-    red: number;
-  };
-  awayTeamCards?: {
-    yellow: number;
-    red: number;
-  };
-  indicators?: {
-    aggregate?: 'home' | 'away';
-    penalty?: 'home' | 'away';
-    redCard?: 'home' | 'away';
-  };
-}
+import { Match } from '../types/match';
 
 interface MatchCardProps {
   match: Match;
@@ -71,7 +39,6 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
       className="w-full max-w-[788px] h-auto min-h-[80px] border-b border-[#2A2A2A] relative cursor-pointer hover:bg-[#252525] transition-colors"
       onClick={handleMatchClick}
     >
-      {/* Gradient Overlay for Live Matches - Starting from Left Border */}
       {isLive && (
         <div 
           className="absolute left-0 right-0 top-2 bottom-2 pointer-events-none"
@@ -89,7 +56,6 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
               <span className={`${getStatusTextColor()} text-sm font-medium`}>
                 {match.statusText}
               </span>
-              {/* Animated Green Border for Live Matches */}
               {isLive && (
                 <div className="relative w-full h-0.5 flex justify-center">
                   <div className="w-[16px] h-0.5 relative">
@@ -101,9 +67,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
           )}
         </div>
 
-        {/* Teams and Scores - Two Rows */}
         <div className="flex-1 flex flex-col justify-between h-[56px]">
-          {/* Home Team Row */}
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 flex-1">
               <div className="w-8 h-8 bg-[#1A1A1A] rounded-full flex items-center justify-center flex-shrink-0">
@@ -114,7 +78,6 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
                 )}
               </div>
               <span className="text-[#FFFFFF] text-sm font-medium">{match.homeTeam.name}</span>
-              {/* Indicators (AGG, PEN, etc.) */}
               {match.indicators?.aggregate === 'home' && (
                 <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-[#26273B]">
                   <svg className="w-3 h-3 text-[#00FFA5]" fill="currentColor" viewBox="0 0 20 20">
@@ -142,7 +105,6 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
                 </svg>
               )}
             </div>
-            {/* Home Team Scores */}
             {match.homeTeam.score !== undefined && (
               <div className="flex items-center gap-1">
                 {match.homeTeam.aggregateScore !== undefined && (
@@ -153,7 +115,6 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
             )}
           </div>
 
-          {/* Away Team Row */}
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 flex-1">
               <div className="w-8 h-8 bg-[#1A1A1A] rounded-full flex items-center justify-center flex-shrink-0">
@@ -164,7 +125,6 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
                 )}
               </div>
               <span className="text-[#FFFFFF] text-sm font-medium">{match.awayTeam.name}</span>
-              {/* Indicators (AGG, PEN, etc.) */}
               {match.indicators?.aggregate === 'away' && (
                 <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-[#26273B]">
                   <svg className="w-3 h-3 text-[#00FFA5]" fill="currentColor" viewBox="0 0 20 20">
@@ -192,7 +152,6 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
                 </svg>
               )}
             </div>
-            {/* Away Team Scores */}
             {match.awayTeam.score !== undefined && (
               <div className="flex items-center gap-1">
                 {match.awayTeam.aggregateScore !== undefined && (
@@ -204,7 +163,6 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
           </div>
         </div>
 
-        {/* Options Menu */}
         <button title="More options" className="p-2 hover:bg-[#252525] rounded-full transition-colors flex-shrink-0 self-center">
           <svg className="w-5 h-5 text-[#B3B3B3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
