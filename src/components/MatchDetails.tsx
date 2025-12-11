@@ -43,11 +43,11 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
         );
       case 'yellowCard':
         return (
-          <div className="w-3 h-3 bg-[#FFD700] rounded-sm" />
+          <div className="w-3 h-3 bg-[#FFD700] opacity-70" />
         );
       case 'redCard':
         return (
-          <div className="w-3 h-3 bg-[#FF0000] rounded-sm" />
+          <div className="w-3 h-3 bg-[#FF0000] opacity-60" />
         );
       case 'corner':
         return (
@@ -338,7 +338,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
   return (
     <div className="bg-[#181921]">
       <div className="max-w-[820px] mx-auto pt-10">
-      <div className="w-[707px] bg-[#1D1E2B] rounded-t-lg">
+      <div className="xl:w-[707px] bg-[#1D1E2B] rounded-t-lg">
         {/* Header with back button and league name */}
         <div className="flex items-center gap-4 px-4 py-4 border-b border-[#2A2A2A]">
           <button
@@ -358,14 +358,14 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
               <div className="relative">
                 {/* Yellow Card Indicator - Upper Right */}
                 {matchData.homeTeamCards?.yellow && matchData.homeTeamCards.yellow > 0 && (
-                  <div className="absolute -top-3 -right-5 w-5 h-5 bg-[#FFD700] rounded flex items-center justify-center z-10">
+                  <div className="absolute -top-3 -right-5 w-5 h-5 bg-[#FFD700] flex items-center justify-center z-10">
                     <span className="text-[#000] text-[10px] font-bold">{matchData.homeTeamCards.yellow}</span>
                   </div>
                 )}
                 {/* Red Card Indicator - Above Logo */}
                 {matchData.homeTeamCards?.red && matchData.homeTeamCards.red > 0 && (
-                  <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 -translate-y-6 w-5 h-5 bg-[#FF0000] rounded flex items-center justify-center z-10">
-                    <span className="text-[#FFF] text-[10px] font-bold">{matchData.homeTeamCards.red}</span>
+                  <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 -translate-y-6 w-5 h-5 bg-[#FF0000] flex items-center justify-center z-10">
+                    <span className="text-[#000] text-[10px] font-bold">{matchData.homeTeamCards.red}</span>
                   </div>
                 )}
                 
@@ -400,12 +400,12 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
                 {matchData.awayTeamCards && (matchData.awayTeamCards.red > 0 || matchData.awayTeamCards.yellow > 0) && (
                   <div className="absolute -top-3 -left-10 flex flex-col gap-0.5 z-10 flex-row">
                     {matchData.awayTeamCards.red > 0 && (
-                      <div className="w-5 h-5 bg-[#FF0000] rounded flex items-center justify-center">
-                        <span className="text-[#FFF] text-[10px] font-bold">{matchData.awayTeamCards.red}</span>
+                      <div className="w-5 h-5 bg-[#FF0000] flex items-center justify-center">
+                        <span className="text-[#000] text-[10px] font-bold">{matchData.awayTeamCards.red}</span>
                       </div>
                     )}
                     {matchData.awayTeamCards.yellow > 0 && (
-                      <div className="w-5 h-5 bg-[#FFD700] rounded flex items-center justify-center">
+                      <div className="w-5 h-5 bg-[#FFD700] flex items-center justify-center">
                         <span className="text-[#000] text-[10px] font-bold">{matchData.awayTeamCards.yellow}</span>
                       </div>
                     )}
