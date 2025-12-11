@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   const activeTab = 'Matches';
 
   return (
-    <header className="bg-[#6D00FF] border-b border-[#2A2A2A] w-full">
+    <header className="bg-[#6D00FF] border-b border-[#2A2A2A] w-screen">
       <div className="max-w-7xl mx-auto px-4 py-1">
         <div className="flex items-center justify-between">
           <div>
@@ -35,28 +35,28 @@ const Header: React.FC = () => {
 
           <div className="flex items-center gap-2">
             {/* Icons */}
-            <button className="w-[40px] h-[40px] py-2 px-4 rounded-full bg-[#00000026] hover:bg-[#00000040] transition-colors flex items-center justify-center">
-             <img src={globe} alt="globe" className="w-5 h-5" />
+            <button className="w-[40px] h-[40px] py-2 px-1 rounded-full bg-[#00000026] hover:bg-[#00000040] transition-colors flex items-center justify-center">
+             <img src={globe} alt="globe" className="w-[25px] h-[25px]" />
             </button>
-            <button className="w-[40px] h-[40px] py-2 px-4 rounded-full bg-[#00000026] hover:bg-[#00000040] transition-colors flex items-center justify-center">
-              <img src={ball} alt="ball" className="w-5 h-5" />
+            <button className="w-[40px] h-[40px] py-2 px-1 rounded-full bg-[#00000026] hover:bg-[#00000040] transition-colors flex items-center justify-center">
+              <img src={ball} alt="ball" className="w-[25px] h-[25px]" />
             </button>
 
-            <div className="h-[40px] py-2 px-4 rounded-full bg-[#00000026] flex items-center gap-2">
-              <img src={pl} alt="premier league" className="w-5 h-5" />
-              <select className="bg-transparent text-[#FFFFFF] text-sm border-none outline-none cursor-pointer">
+            <div className="h-[40px] py-2 px-1 rounded-full bg-[#00000026] flex items-center gap-2">
+              <img src={pl} alt="premier league" className="w-[25px] h-[25px]" />
+              <select title="premier league" className="bg-transparent text-[#FFFFFF] text-sm border-none outline-none cursor-pointer">
                 <option>Premier League</option>
               </select>
             </div>
 
-            <div className="h-[40px] py-2 px-4 rounded-full bg-[#00000026] flex items-center justify-center">
-              <select className="bg-transparent text-[#FFFFFF] text-sm border-none outline-none cursor-pointer">
+            <div className="h-[40px] py-2 px-1 rounded-full bg-[#00000026] flex items-center justify-center">
+              <select title="2024/25" className="bg-transparent text-[#FFFFFF] text-sm border-none outline-none cursor-pointer">
                 <option>2024/25</option>
               </select>
             </div>
 
-            <button className="w-[40px] h-[40px] py-2 px-4 rounded-full bg-[#00000026] hover:bg-[#00000040] transition-colors flex items-center justify-center">
-              <img src={eg} alt="flag" className="w-5 h-5" />
+            <button className="w-[40px] h-[40px] px-1 rounded-full bg-[#00000026] hover:bg-[#00000040] transition-colors flex items-center justify-center">
+              <img src={eg} alt="flag" className="w-[25px] h-[25px]" />
             </button>
           </div>
         </div>
