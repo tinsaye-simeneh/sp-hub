@@ -7,7 +7,7 @@ const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-[#6D00FF] border-b border-[#2A2A2A] w-screen top-0 sticky z-50">
+    <header className="bg-brand-primary border-b border-border-primary w-screen top-0 sticky z-50">
       <div className="max-w-[1440px] mx-auto px-4 py-1">
         <div className="flex items-center justify-between">
           <div>
@@ -21,10 +21,10 @@ const Header: React.FC = () => {
                 href="#"
                 className={`px-2 py-2 text-[18px] transition-all relative border-b-2 ${
                   item === activeTab
-                    ? 'text-[#00FFA5] border-[#00FFA5]'
+                    ? 'text-brand-secondary border-brand-secondary'
                     : item === 'Standings'
-                    ? 'text-[#CAC4D0] border-transparent hover:text-[#FFFFFF] hover:border-[#00FFA5]'
-                    : 'text-[#FFFFFF] border-transparent hover:text-[#FFFFFF] hover:border-[#00FFA5]'
+                    ? 'text-text-secondary border-transparent hover:text-text-primary hover:border-brand-secondary'
+                    : 'text-text-primary border-transparent hover:text-text-primary hover:border-brand-secondary'
                 }`}
               >
                 {item}
@@ -33,35 +33,35 @@ const Header: React.FC = () => {
           </nav>
 
           <div className="flex items-center gap-2">
-            <button className="w-[40px] h-[40px] py-2 px-1 rounded-full bg-[#00000026] hover:bg-[#00000040] transition-colors flex items-center justify-center">
+            <button className="w-[40px] h-[40px] py-2 px-1 rounded-full bg-overlay hover:bg-overlayHover transition-colors flex items-center justify-center">
              <img src={globe} alt="globe" className="w-[24px] h-[24px]" />
             </button>
-            <button className="w-[40px] h-[40px] py-2 px-1 rounded-full bg-[#00000026] hover:bg-[#00000040] transition-colors flex items-center justify-center">
+            <button className="w-[40px] h-[40px] py-2 px-1 rounded-full bg-overlay hover:bg-overlayHover transition-colors flex items-center justify-center">
               <img src={ball} alt="ball" className="w-[24px] h-[24px]" />
             </button>
 
-            <div className="w-auto md:w-[206px] h-[40px] py-2 px-2 md:px-4 rounded-full bg-[#00000026] flex items-center gap-1 overflow-hidden hover:bg-[rgba(0,0,0,0.8)] transition-colors">
+            <div className="w-auto md:w-[206px] h-[40px] py-2 px-2 md:px-4 rounded-full bg-overlay flex items-center gap-1 overflow-hidden hover:bg-overlayHover transition-colors">
               <img src={pl} alt="premier league" className="w-[16px] h-[16px] flex-shrink-0" />
               <select 
                 title="premier league" 
-                className="bg-transparent text-[#FFFFFF] text-base border-none outline-none cursor-default pr-3 hidden md:block"
+                className="bg-transparent text-text-primary text-base border-none outline-none cursor-default pr-3 hidden md:block"
                 onMouseDown={(e) => e.preventDefault()}
               >
                 <option>Premier League</option>
               </select>
             </div>
 
-            <div className="w-[123px] h-[40px] py-2 px-4 rounded-full bg-[#00000026] flex items-center justify-center hover:bg-[rgba(0,0,0,0.8)] transition-colors">
+            <div className="w-[123px] h-[40px] py-2 px-4 rounded-full bg-overlay flex items-center justify-center hover:bg-overlayHover transition-colors">
               <select 
                 title="2024/25" 
-                className="bg-transparent font-medium text-[#FFFFFF] text-base border-none outline-none cursor-default pr-3"
+                className="bg-transparent font-medium text-text-primary text-base border-none outline-none cursor-default pr-3"
                 onMouseDown={(e) => e.preventDefault()}
               >
                 <option>2024/25</option>
               </select>
             </div>
 
-            <button className="hidden md:flex w-[40px] h-[40px] px-1 rounded-full bg-[#00000026] hover:bg-[#00000040] transition-colors items-center justify-center">
+            <button className="hidden md:flex w-[40px] h-[40px] px-1 rounded-full bg-overlay hover:bg-overlayHover transition-colors items-center justify-center">
               <img src={eg} alt="flag" className="w-[24px] h-[24px]" />
             </button>
             
@@ -97,7 +97,7 @@ const Header: React.FC = () => {
 
               {/* Dropdown Menu - Mobile Only */}
               {isMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-[#1D1E2B] rounded-lg shadow-lg border border-[#2A2A2A] py-2 z-50">
+                <div className="absolute right-0 top-full mt-2 w-48 bg-bg-secondary rounded-lg shadow-lg border border-border-primary py-2 z-50">
                   {navItems.map((item) => (
                     <a
                       key={item}
@@ -105,10 +105,10 @@ const Header: React.FC = () => {
                       onClick={() => setIsMenuOpen(false)}
                       className={`block px-4 py-2 text-sm transition-colors ${
                         item === activeTab
-                          ? 'text-[#00FFA5] bg-[#1D1E2B]'
+                          ? 'text-brand-primary bg-bg-secondary'
                           : item === 'Standings'
-                          ? 'text-[#CAC4D0] hover:text-[#FFFFFF] hover:bg-[#252525]'
-                          : 'text-[#FFFFFF] hover:bg-[#252525]'
+                          ? 'text-text-muted hover:text-text-primary hover:bg-bg-hover'
+                          : 'text-text-primary hover:bg-bg-hover'
                       }`}
                     >
                       {item}

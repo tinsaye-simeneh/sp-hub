@@ -45,17 +45,17 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
 
 
   return (
-    <div className="bg-[#181921]">
+    <div className="bg-bg-primary">
       <div className="w-full xl:max-w-[820px] xl:mx-auto xl:pt-10">
-      <div className="w-full xl:w-[707px] bg-[#1D1E2B] rounded-t-lg xl:mx-auto">
-        <div className="flex items-center gap-4 px-4 py-4 border-b border-[#2A2A2A]">
+      <div className="w-full xl:w-[707px] bg-bg-secondary rounded-t-lg xl:mx-auto">
+        <div className="flex items-center gap-4 px-4 py-4 border-b border-border-primary">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 hover:bg-[#252525] rounded-full transition-colors"
+            className="p-2 hover:bg-bg-hover rounded-full transition-colors"
           >
             <img src={arrowLeft} alt="back" className="w-[24px] h-[24px]" />
           </button>
-          <h1 className="text-[#FFFFFF] text-lg font-medium">{leagueName}</h1>
+          <h1 className="text-text-primary text-lg font-medium">{leagueName}</h1>
         </div>
 
         <MatchSummary match={matchData} />
@@ -72,28 +72,28 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
             />
           )}
           {activeTab === 'Details' && (
-            <div className="text-[#FFFFFF]">
-              <p className="text-sm text-[#B3B3B3]">Match details will be displayed here</p>
+            <div className="text-text-primary">
+              <p className="text-sm text-text-secondary">Match details will be displayed here</p>
             </div>
           )}
           {activeTab === 'Odds' && (
-            <div className="text-[#FFFFFF]">
-              <p className="text-sm text-[#B3B3B3]">Odds will be displayed here</p>
+            <div className="text-text-primary">
+              <p className="text-sm text-text-secondary">Odds will be displayed here</p>
             </div>
           )}
           {activeTab === 'Lineups' && (
-            <div className="text-[#FFFFFF]">
-              <p className="text-sm text-[#B3B3B3]">Lineups will be displayed here</p>
+            <div className="text-text-primary">
+              <p className="text-sm text-text-secondary">Lineups will be displayed here</p>
             </div>
           )}
           {activeTab === 'Stats' && (
-            <div className="text-[#FFFFFF]">
-              <p className="text-sm text-[#B3B3B3]">Statistics will be displayed here</p>
+            <div className="text-text-primary">
+              <p className="text-sm text-text-secondary">Statistics will be displayed here</p>
             </div>
           )}
           {activeTab === 'Standings' && (
-            <div className="text-[#FFFFFF]">
-              <p className="text-sm text-[#B3B3B3]">Standings will be displayed here</p>
+            <div className="text-text-primary">
+              <p className="text-sm text-text-secondary">Standings will be displayed here</p>
             </div>
           )}
         </div>

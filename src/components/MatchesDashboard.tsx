@@ -8,9 +8,9 @@ const MatchesDashboard: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'live' | 'favorites'>('all');
 
   return (
-    <div className="bg-[#181921]">
+    <div className="bg-bg-primary">
       <div className="w-full max-w-[820px] mx-auto px-4 py-6">
-        <h1 className="text-xl md:text-2xl font-bold text-[#FFFFFF] mb-6">Matches</h1>
+        <h1 className="text-xl md:text-2xl font-bold text-text-primary mb-6">Matches</h1>
 
         <DateSelector />
 

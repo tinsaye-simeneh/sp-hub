@@ -26,11 +26,11 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
         );
       case 'yellowCard':
         return (
-          <div className="w-3 h-3 bg-[#FFD700] opacity-70" />
+          <div className="w-3 h-3 bg-card-yellow opacity-70" />
         );
       case 'redCard':
         return (
-          <div className="w-3 h-3 bg-[#FF0000] opacity-60" />
+          <div className="w-3 h-3 bg-card-red opacity-60" />
         );
       case 'corner':
         return (
@@ -62,7 +62,7 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
           return (
             <span>
               <span className="font-medium">{event.player}</span>
-              <span className="text-[#B3B3B3]"> ({event.assist})</span>
+              <span className="text-text-secondary"> ({event.assist})</span>
             </span>
           );
         }
@@ -74,7 +74,7 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
         return event.description ? (
           <span>
             <span className="font-medium">{event.player}</span>
-            <span className="text-[#B3B3B3]"> - {event.description}</span>
+            <span className="text-text-secondary"> - {event.description}</span>
           </span>
         ) : (
           <span className="font-medium">{event.player}</span>
@@ -87,7 +87,7 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
         return event.description ? (
           <span>
             <span className="font-medium">{event.player}</span>
-            <span className="text-[#B3B3B3]"> - {event.description}</span>
+            <span className="text-text-secondary"> - {event.description}</span>
           </span>
         ) : (
           <span className="font-medium">{event.player}</span>
@@ -126,8 +126,8 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
         <div className="flex items-center gap-2">
           <div className="flex-shrink-0">{getEventIcon(event.type)}</div>
           <div className="flex flex-col gap-1 leading-tight">
-            <div className="text-[#FFFFFF] text-sm">{event.playerIn}</div>
-            <div className="text-[#B3B3B3] text-sm">{event.playerOut}</div>
+            <div className="text-text-primary text-sm">{event.playerIn}</div>
+            <div className="text-text-secondary text-sm">{event.playerOut}</div>
           </div>
         </div>
       );
@@ -135,10 +135,10 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
 
     return (
       <div className="flex items-center gap-2">
-        <div className={`flex-shrink-0 ${isGoal ? 'text-[#10B981]' : 'text-[#FFFFFF]'}`}>
+        <div className={`flex-shrink-0 ${isGoal ? 'text-status-live' : 'text-text-primary'}`}>
           {getEventIcon(event.type)}
         </div>
-        <div className="text-[#FFFFFF] text-sm">{getEventText(event)}</div>
+        <div className="text-text-primary text-sm">{getEventText(event)}</div>
       </div>
     );
   };
@@ -156,14 +156,14 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
           {isHome ? (
             <div className="flex items-center gap-2">
               <div className="text-right">{renderEventContent(event, isGoal)}</div>
-              <div className="w-[45px] h-0.5 bg-[#2A2A2A] flex-shrink-0" />
+              <div className="w-[45px] h-0.5 bg-border-primary flex-shrink-0" />
             </div>
           ) : null}
         </div>
 
         <div className="flex justify-center">
           <div
-            className={`${isGoal ? 'bg-[#10B981]' : 'bg-[#2A2A2A]'} text-white text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap`}
+            className={`${isGoal ? 'bg-status-live' : 'bg-border-primary'} text-white text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap`}
           >
             {event.minute}
           </div>
@@ -172,7 +172,7 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
         <div className="flex items-center justify-start">
           {!isHome ? (
             <div className="flex items-center gap-2">
-              <div className="w-[45px] h-0.5 bg-[#2A2A2A] flex-shrink-0" />
+              <div className="w-[45px] h-0.5 bg-border-primary flex-shrink-0" />
               <div className="text-left">{renderEventContent(event, isGoal)}</div>
             </div>
           ) : null}
@@ -182,15 +182,15 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
   };
 
   return (
-    <div className="text-[#FFFFFF] w-full xl:w-[707px] bg-[#1D1E2B] rounded-lg xl:mx-auto px-5 pt-5">
+    <div className="text-text-primary w-full xl:w-[707px] bg-bg-secondary rounded-lg xl:mx-auto px-5 pt-5">
       <h2 className="text-lg font-medium mb-3 ml-6">Events</h2>
       
       <div className="relative pb-8">
         <div className="flex flex-col">
           <div className="relative flex items-center justify-center py-3 mb-4">
-            <div className="absolute left-0 right-0 h-0.5 bg-[#2A2A2A]" />
-            <div className="relative z-10 bg-[#1d1e2b] px-4">
-              <span className="text-[#FFFFFF] text-sm font-medium">Fulltime {homeScore} - {awayScore}</span>
+            <div className="absolute left-0 right-0 h-0.5 bg-border-primary" />
+            <div className="relative z-10 bg-bg-secondary px-4">
+              <span className="text-text-primary text-sm font-medium">Fulltime {homeScore} - {awayScore}</span>
             </div>
           </div>
 
@@ -199,9 +199,9 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
           </div>
 
           <div className="relative flex items-center justify-center py-3 my-4">
-            <div className="absolute left-0 right-0 h-0.5 bg-[#2A2A2A]" />
-            <div className="relative z-10 bg-[#1d1e2b] px-4">
-              <span className="text-[#FFFFFF] text-sm font-medium">Halftime 1 - 0</span>
+            <div className="absolute left-0 right-0 h-0.5 bg-border-primary" />
+            <div className="relative z-10 bg-bg-secondary px-4">
+              <span className="text-text-primary text-sm font-medium">Halftime 1 - 0</span>
             </div>
           </div>
 
@@ -210,9 +210,9 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
           </div>
 
           <div className="relative flex items-center justify-center py-3 mt-4">
-            <div className="absolute left-0 right-0 h-0.5 bg-[#2A2A2A]" />
-            <div className="relative z-10 bg-[#1d1e2b] px-4">
-              <span className="text-[#FFFFFF] text-sm font-medium">Kick Off -13:00</span>
+            <div className="absolute left-0 right-0 h-0.5 bg-border-primary" />
+            <div className="relative z-10 bg-bg-secondary px-4">
+              <span className="text-text-primary text-sm font-medium">Kick Off -13:00</span>
             </div>
           </div>
         </div>

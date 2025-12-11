@@ -18,7 +18,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
   ];
 
   return (
-    <div className="border-b border-[#2A2A2A] px-4">
+    <div className="border-b border-border-primary px-4">
       <div className="flex items-center justify-center gap-1 overflow-x-auto scrollbar-hide">
         {tabs.map((tab) => (
           <button
@@ -26,13 +26,13 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
             onClick={() => onTabChange(tab)}
             className={`px-4 py-3 text-sm font-medium transition-colors whitespace-nowrap relative ${
               activeTab === tab
-                ? 'text-[#00FFA5]'
-                : 'text-[#B3B3B3] hover:text-[#FFFFFF]'
+                ? 'text-brand-primary'
+                : 'text-text-secondary hover:text-text-primary'
             }`}
           >
             {tab}
             {activeTab === tab && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#00FFA5]" />
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-primary" />
             )}
           </button>
         ))}

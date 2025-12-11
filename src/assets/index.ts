@@ -1,4 +1,4 @@
-// Centralized asset imports
+
 import logo from '../../public/logo.png';
 import globe from '../../public/globe.png';
 import ball from '../../public/ball.png';
@@ -24,8 +24,7 @@ export const assets = {
   arrowLeft,
   heart,
 };
-
-// Named exports for convenience
+  
 export {
   logo,
   globe,
