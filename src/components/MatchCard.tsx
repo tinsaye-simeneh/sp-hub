@@ -132,11 +132,14 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
                 </div>
               )}
               {match.indicators?.redCard === 'home' && (
-                <div
-                  className="w-[10px] h-[12px] bg-[#FF0000] rounded-[2px] flex-shrink-0"
-                  title="Red card"
+                <svg
+                  className="w-[10px] h-[12px] flex-shrink-0 self-center"
+                  viewBox="0 0 10 12"
+                  fill="none"
                   aria-label="Red card"
-                />
+                >
+                  <rect x="0" y="0" width="10" height="12" rx="2" fill="#FF0000" />
+                </svg>
               )}
             </div>
             {/* Home Team Scores */}
@@ -179,11 +182,14 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
                 </div>
               )}
               {match.indicators?.redCard === 'away' && (
-                <div
-                  className="w-[10px] h-[12px] bg-[#FF0000] rounded-[2px] flex-shrink-0"
-                  title="Red card"
+                <svg
+                  className="w-[10px] h-[12px] flex-shrink-0 self-center"
+                  viewBox="0 0 10 12"
+                  fill="none"
                   aria-label="Red card"
-                />
+                >
+                  <rect x="0" y="0" width="10" height="12" rx="2" fill="#FF0000" />
+                </svg>
               )}
             </div>
             {/* Away Team Scores */}

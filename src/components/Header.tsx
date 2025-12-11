@@ -15,7 +15,7 @@ const Header: React.FC = () => {
       <div className="max-w-[1440px] mx-auto px-4 py-1">
         <div className="flex items-center justify-between">
           <div>
-            <img src={logo} alt="logo" className="w-[82px] md:w-[200px] h-auto md:h-[60px]" />
+            <img src={logo} alt="logo" className="w-[120px] md:w-[200px] h-auto md:h-[60px]" />
           </div>
 
           <nav className="hidden md:flex items-center gap-1 flex-1 justify-center">
