@@ -33,25 +33,25 @@ const Header: React.FC = () => {
           </nav>
 
           <div className="flex items-center gap-2">
-            <button className="w-[40px] h-[40px] py-2 px-1 rounded-full bg-overlay hover:bg-overlayHover transition-colors flex items-center justify-center">
+            <button className="w-[40px] h-[40px] py-2 px-1 rounded-full bg-[#00000026] hover:bg-black/40 transition-colors flex items-center justify-center">
              <img src={globe} alt="globe" className="w-[24px] h-[24px]" />
             </button>
-            <button className="w-[40px] h-[40px] py-2 px-1 rounded-full bg-overlay hover:bg-overlayHover transition-colors flex items-center justify-center">
+            <button className="w-[40px] h-[40px] py-2 px-1 rounded-full bg-[#00000026] hover:bg-black/40 transition-colors flex items-center justify-center">
               <img src={ball} alt="ball" className="w-[24px] h-[24px]" />
             </button>
 
-            <div className="w-auto md:w-[206px] h-[40px] py-2 px-2 md:px-4 rounded-full bg-overlay flex items-center gap-1 overflow-hidden hover:bg-overlayHover transition-colors">
+            <div className="w-auto md:w-[206px] h-[40px] py-2 px-2 md:px-4 rounded-full bg-[#00000026] flex items-center gap-1 overflow-hidden hover:bg-black/40 transition-colors">
               <img src={pl} alt="premier league" className="w-[16px] h-[16px] flex-shrink-0" />
               <select 
                 title="premier league" 
-                className="bg-transparent text-text-primary text-base border-none outline-none cursor-default pr-3 hidden md:block"
+                className="bg-overlay text-text-primary text-base border-none outline-none cursor-default pr-3 hidden md:block"
                 onMouseDown={(e) => e.preventDefault()}
               >
                 <option>Premier League</option>
               </select>
             </div>
 
-            <div className="w-[123px] h-[40px] py-2 px-4 rounded-full bg-overlay flex items-center justify-center hover:bg-overlayHover transition-colors">
+            <div className="w-[123px] h-[40px] py-2 px-4 rounded-full bg-[#00000026] flex items-center justify-center hover:bg-black/40 transition-colors">
               <select 
                 title="2024/25" 
                 className="bg-transparent font-medium text-text-primary text-base border-none outline-none cursor-default pr-3"
@@ -61,7 +61,7 @@ const Header: React.FC = () => {
               </select>
             </div>
 
-            <button className="hidden md:flex w-[40px] h-[40px] px-1 rounded-full bg-overlay hover:bg-overlayHover transition-colors items-center justify-center">
+            <button className="hidden md:flex w-[40px] h-[40px] px-1 rounded-full bg-[#00000026] hover:bg-black/40 transition-colors items-center justify-center">
               <img src={eg} alt="flag" className="w-[24px] h-[24px]" />
             </button>
             
