@@ -1,2 +1,63 @@
 @import "tailwindcss";
 
+html, body {
+  font-family: 'Poppins', sans-serif;
+}
+
+* {
+  font-family: inherit;
+}
+
+@theme {
+  --color-bg-primary: #0F0F0F;
+  --color-bg-secondary: #1A1A1A;
+  --color-bg-card: #1E1E1E;
+  --color-bg-hover: #252525;
+  
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #B3B3B3;
+  --color-text-tertiary: #808080;
+  --color-text-disabled: #4A4A4A;
+  
+  --color-brand-primary: #6D00FF;
+  --color-brand-secondary: #00FFA5;
+  --color-brand-logo: #3B82F6;
+  
+  --color-status-live: #10B981;
+  --color-status-ft: #EF4444;
+  --color-status-ht: #F59E0B;
+  --color-status-scheduled: #6B7280;
+  
+  --color-btn-active: #10B981;
+  --color-btn-hover: #059669;
+  
+  --color-border-primary: #2A2A2A;
+  --color-border-secondary: #1F1F1F;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+@keyframes widthPulse {
+  0%, 100% {
+    width: 0px;
+  }
+  50% {
+    width: 16px;
+  }
+}
+
+.animate-width-pulse {
+  animation: widthPulse 2s ease-in-out infinite;
+}
+

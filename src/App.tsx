@@ -1,13 +1,19 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import MatchesDashboard from './components/MatchesDashboard';
+import MatchDetails from './components/MatchDetails';
 
 function App() {
-
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="container mx-auto p-8">
-        <h1 className="text-4xl font-bold mb-4">The Sports Hub</h1>
-        <p className="text-gray-400 mb-8">Welcome to your sports dashboard</p>
+    <Router>
+      <div className="bg-[#0F0F0F] text-[#FFFFFF] w-full">
+        <Header />
+        <Routes>
+          <Route path="/" element={<MatchesDashboard />} />
+          <Route path="/match/:id" element={<MatchDetails />} />
+        </Routes>
       </div>
-    </div>
+    </Router>
   )
 }
 
