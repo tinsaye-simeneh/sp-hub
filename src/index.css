@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+html, body {
+  font-family: 'Poppins', sans-serif;
+}
+
+* {
+  font-family: inherit;
+}
+
 @theme {
   --color-bg-primary: #0F0F0F;
   --color-bg-secondary: #1A1A1A;

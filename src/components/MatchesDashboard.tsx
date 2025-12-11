@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import LeagueSection from './LeagueSection';
 import { Match } from './MatchCard';
 
-// Mock data based on the images
 const mockMatches: { league: string; matches: Match[] }[] = [
   {
     league: 'UEFA Champions League',
@@ -113,15 +112,13 @@ const MatchesDashboard: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0F0F0F] w-full">
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        {/* Title */}
+    <div className="min-h-screen bg-[#181921]">
+      <div className="max-w-[820px] mx-auto px-4 py-6">
         <h1 className="text-2xl font-bold text-[#FFFFFF] mb-6">Matches</h1>
 
-        {/* Date Navigation */}
         <div className="flex items-center justify-center mb-6">
           <div className="flex items-center gap-2">
-            <button className="p-2 hover:bg-[#252525] rounded-full transition-colors">
+            <button title="Previous Day" className="p-2 hover:bg-[#252525] rounded-full transition-colors">
               <svg className="w-5 h-5 text-[#FFFFFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
@@ -132,7 +129,7 @@ const MatchesDashboard: React.FC = () => {
               </svg>
               <span className="text-[#FFFFFF] text-sm font-medium">Today</span>
             </div>
-            <button className="p-2 hover:bg-[#252525] rounded-full transition-colors">
+            <button title="Next Day" className="p-2 hover:bg-[#252525] rounded-full transition-colors">
               <svg className="w-5 h-5 text-[#FFFFFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -140,7 +137,6 @@ const MatchesDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Filter Buttons */}
         <div className="flex items-center gap-3 mb-6">
           {filterButtons.map((button) => (
             <button
@@ -175,7 +171,6 @@ const MatchesDashboard: React.FC = () => {
           ))}
         </div>
 
-        {/* League Sections */}
         <div>
           {mockMatches.map((section) => (
             <LeagueSection
