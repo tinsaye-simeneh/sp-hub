@@ -35,3 +35,29 @@ html, body {
   --color-border-secondary: #1F1F1F;
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+@keyframes widthPulse {
+  0%, 100% {
+    width: 0px;
+  }
+  50% {
+    width: 16px;
+  }
+}
+
+.animate-width-pulse {
+  animation: widthPulse 2s ease-in-out infinite;
+}
+

@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   const activeTab = 'Matches';
 
   return (
-    <header className="bg-[#6D00FF] border-b border-[#2A2A2A] w-screen">
+    <header className="bg-[#6D00FF] border-b border-[#2A2A2A] w-screen top-0 sticky z-50">
       <div className="max-w-[1440px] mx-auto px-4 py-1">
         <div className="flex items-center justify-between">
           <div>

@@ -29,133 +29,145 @@ interface MatchCardProps {
 }
 
 const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
-  const getStatusBarColor = () => {
-    switch (match.status) {
-      case 'live':
-        return 'bg-[#10B981]';
-      case 'ft':
-        return 'bg-[#EF4444]';
-      case 'ht':
-        return 'bg-[#F59E0B]';
-      default:
-        return 'bg-transparent';
-    }
+  const isLive = match.status === 'live' || match.status === 'ht';
+  
+  const getBorderColor = () => {
+    if (isLive) return 'border-l-[#10B981]';
+    if (match.status === 'ft') return 'border-l-[#EF4444]';
+    if (match.status === 'scheduled') return 'border-l-[#808080]';
+    return 'border-l-transparent';
   };
 
   const getStatusTextColor = () => {
     switch (match.status) {
       case 'live':
         return 'text-[#10B981]';
-      case 'ft':
-        return 'text-[#EF4444]';
       case 'ht':
-        return 'text-[#F59E0B]';
+        return 'text-[#10B981]';
+      case 'ft':
+        return 'text-[#FF0000]';
       default:
         return 'text-[#FFFFFF]';
     }
   };
 
   return (
-    <div className="bg-[#1E1E1E] border-b border-[#2A2A2A] hover:bg-[#252525] transition-colors">
-      <div className="flex items-center gap-4 px-4 py-3">
-        {/* Status Indicator Bar */}
-        <div className={`w-1 h-12 ${getStatusBarColor()} rounded-full flex-shrink-0`} />
-
-        {/* Status/Time */}
-        <div className="flex-shrink-0 w-16">
+    <div className="w-[788px] h-[80px] border-b border-[#2A2A2A] relative">
+      {/* Gradient Overlay for Live Matches - Starting from Left Border */}
+      {isLive && (
+        <div 
+          className="absolute left-0 right-0 top-2 bottom-2 pointer-events-none"
+          style={{
+            background: 'linear-gradient(to right, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.1) 10%, transparent 30%)'
+          }}
+        />
+      )}
+      <div className="flex items-start gap-4 px-4 pt-2 pb-1 h-full relative z-10">
+        <div className={`w-[56px] h-[60px] flex flex-col items-center justify-center gap-1 border-l-4 ${getBorderColor()} flex-shrink-0`}>
           {match.status === 'scheduled' ? (
             <span className="text-[#FFFFFF] text-sm font-medium">{match.time}</span>
           ) : (
-            <span className={`${getStatusTextColor()} text-sm font-medium`}>
-              {match.statusText}
-            </span>
+            <>
+              <span className={`${getStatusTextColor()} text-sm font-medium`}>
+                {match.statusText}
+              </span>
+              {/* Animated Green Border for Live Matches */}
+              {isLive && (
+                <div className="relative w-full h-0.5 flex justify-center">
+                  <div className="w-[16px] h-0.5 relative">
+                    <div className="bg-[#10B981] h-0.5 animate-width-pulse max-w-[16px]" />
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
 
-        {/* Teams and Scores */}
-        <div className="flex-1 flex items-center justify-between gap-4">
-          <div className="flex-1 flex items-center gap-3">
-            {/* Home Team */}
+        {/* Teams and Scores - Two Rows */}
+        <div className="flex-1 flex flex-col justify-between h-[56px]">
+          {/* Home Team Row */}
+          <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 flex-1">
               <div className="w-8 h-8 bg-[#1A1A1A] rounded-full flex items-center justify-center flex-shrink-0">
                 {match.homeTeam.logo ? (
-                  <img src={match.homeTeam.logo} alt={match.homeTeam.name} className="w-6 h-6" />
+                  <img src={match.homeTeam.logo} alt={match.homeTeam.name} className="w-[16px] h-[16px]" />
                 ) : (
-                  <div className="w-4 h-4 bg-text-tertiary rounded-full" />
+                  <div className="w-4 h-4 bg-[#808080] rounded-full" />
                 )}
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-[#FFFFFF] text-sm font-medium">{match.homeTeam.name}</span>
-                {match.indicators?.redCard === 'home' && (
-                  <span className="text-[#EF4444] text-xs">🟥</span>
-                )}
-                {match.indicators?.aggregate === 'home' && (
-                  <span className="text-[#10B981] text-xs font-medium">AGG</span>
-                )}
-                {match.indicators?.penalty === 'home' && (
-                  <span className="text-[#10B981] text-xs font-medium">PEN</span>
-                )}
-              </div>
-            </div>
-
-            {/* Scores */}
-            <div className="flex items-center gap-2">
-              {match.homeTeam.score !== undefined && (
-                <div className="text-right">
-                  {match.homeTeam.aggregateScore !== undefined && (
-                    <span className="text-[#808080] text-xs mr-1">
-                      [{match.homeTeam.aggregateScore}]
-                    </span>
-                  )}
-                  <span className="text-[#FFFFFF] text-lg font-bold">
-                    {match.homeTeam.score}
-                  </span>
+              <span className="text-[#FFFFFF] text-sm font-medium">{match.homeTeam.name}</span>
+              {/* Indicators (AGG, PEN, etc.) */}
+              {match.indicators?.aggregate === 'home' && (
+                <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-[#26273B]">
+                  <svg className="w-3 h-3 text-[#00FFA5]" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-[#00FFA5] text-[8px] leading-[12px] font-medium mt-[2px]">AGG</span>
                 </div>
               )}
-              {match.homeTeam.score !== undefined && match.awayTeam.score !== undefined && (
-                <span className="text-[#808080]">-</span>
-              )}
-              {match.awayTeam.score !== undefined && (
-                <div className="text-left">
-                  <span className="text-[#FFFFFF] text-lg font-bold">
-                    {match.awayTeam.score}
-                  </span>
-                  {match.awayTeam.aggregateScore !== undefined && (
-                    <span className="text-[#808080] text-xs ml-1">
-                      [{match.awayTeam.aggregateScore}]
-                    </span>
-                  )}
+              {match.indicators?.penalty === 'home' && (
+                <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-[#26273B]">
+                 <svg className="w-3 h-3 text-[#00FFA5]" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-[#00FFA5] text-[8px] leading-[12px] font-medium mt-[2px]">PEN</span>
                 </div>
               )}
             </div>
-
-            {/* Away Team */}
-            <div className="flex items-center gap-2 flex-1 justify-end">
-              <div className="flex items-center gap-2">
-                {match.indicators?.aggregate === 'away' && (
-                  <span className="text-[#10B981] text-xs font-medium">AGG</span>
+            {/* Home Team Scores */}
+            {match.homeTeam.score !== undefined && (
+              <div className="flex items-center gap-1">
+                {match.homeTeam.aggregateScore !== undefined && (
+                  <span className="text-[#808080] text-[11px] leading-[16px] font-medium font-inter mr-1">[{match.homeTeam.aggregateScore}]</span>
                 )}
-                {match.indicators?.penalty === 'away' && (
-                  <span className="text-[#10B981] text-xs font-medium">PEN</span>
-                )}
-                {match.indicators?.redCard === 'away' && (
-                  <span className="text-[#EF4444] text-xs">🟥</span>
-                )}
-                <span className="text-[#FFFFFF] text-sm font-medium">{match.awayTeam.name}</span>
+                <span className="text-[#FFFFFF] text-[12px] leading-[20px] font-medium font-inter">{match.homeTeam.score}</span>
               </div>
+            )}
+          </div>
+
+          {/* Away Team Row */}
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 flex-1">
               <div className="w-8 h-8 bg-[#1A1A1A] rounded-full flex items-center justify-center flex-shrink-0">
                 {match.awayTeam.logo ? (
-                  <img src={match.awayTeam.logo} alt={match.awayTeam.name} className="w-6 h-6" />
+                  <img src={match.awayTeam.logo} alt={match.awayTeam.name} className="w-[16px] h-[16px]" />
                 ) : (
-                  <div className="w-4 h-4 bg-text-tertiary rounded-full" />
+                  <div className="w-[16px] h-[16px] bg-[#808080] rounded-full" />
                 )}
               </div>
+              <span className="text-[#FFFFFF] text-sm font-medium">{match.awayTeam.name}</span>
+              {/* Indicators (AGG, PEN, etc.) */}
+              {match.indicators?.aggregate === 'away' && (
+                <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-[#26273B]">
+                  <svg className="w-3 h-3 text-[#00FFA5]" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-[#00FFA5] text-[8px] leading-[12px] font-medium mt-[2px]">AGG</span>
+                </div>
+              )}
+              {match.indicators?.penalty === 'away' && (
+                <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-[#26273B]">
+                  <svg className="w-3 h-3 text-[#00FFA5]" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-[#00FFA5] text-[8px] leading-[12px] font-medium mt-[2px]">PEN</span>
+                </div>
+              )}
             </div>
+            {/* Away Team Scores */}
+            {match.awayTeam.score !== undefined && (
+              <div className="flex items-center gap-1">
+                {match.awayTeam.aggregateScore !== undefined && (
+                  <span className="text-[#808080] text-[11px] leading-[16px] font-medium font-inter mr-1">[{match.awayTeam.aggregateScore}]</span>
+                )}
+                <span className="text-[#FFFFFF] text-[12px] leading-[20px] font-medium font-inter">{match.awayTeam.score}</span>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Options Menu */}
-        <button className="p-2 hover:bg-[#252525] rounded-full transition-colors">
+        <button title="More options" className="p-2 hover:bg-[#252525] rounded-full transition-colors flex-shrink-0 self-center">
           <svg className="w-5 h-5 text-[#B3B3B3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
           </svg>
