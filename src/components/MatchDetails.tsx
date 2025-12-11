@@ -172,15 +172,15 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
     return (
       <div
         key={event.id}
-        className="grid grid-cols-[1fr_64px_1fr] items-center gap-x-3 min-h-[40px]"
+        className="grid grid-cols-[1fr_64px_1fr] items-center gap-x-0.5 min-h-[40px]"
       >
         {/* Left column (home) */}
         <div className="flex items-center justify-end">
           {isHome ? (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <div className="text-right">{renderEventContent(event, isGoal)}</div>
               {/* Connector line (leave space due to column gap) */}
-              <div className="w-[40px] h-0.5 bg-[#2A2A2A] flex-shrink-0" />
+              <div className="w-[45px] h-0.5 bg-[#2A2A2A] flex-shrink-0" />
             </div>
           ) : null}
         </div>
@@ -197,9 +197,9 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
         {/* Right column (away) */}
         <div className="flex items-center justify-start">
           {!isHome ? (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               {/* Connector line */}
-              <div className="w-[40px] h-0.5 bg-[#2A2A2A] flex-shrink-0" />
+              <div className="w-[45px] h-0.5 bg-[#2A2A2A] flex-shrink-0" />
               <div className="text-left">{renderEventContent(event, isGoal)}</div>
             </div>
           ) : null}
@@ -209,8 +209,8 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
   };
 
   return (
-    <div className="text-[#FFFFFF]">
-      <h2 className="text-lg font-medium mb-6">Events</h2>
+    <div className="text-[#FFFFFF] w-[707px] bg-[#1D1E2B] rounded-lg mx-auto px-5 pt-5">
+      <h2 className="text-lg font-medium mb-3 ml-6">Events</h2>
       
       <div className="relative pb-8">
         <div className="flex flex-col">
@@ -223,7 +223,7 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
           </div>
 
           {/* Events After Halftime (>= 45) */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3">
             {eventsAfterHalftime.map(renderEventRow)}
           </div>
 
@@ -236,7 +236,7 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, away
           </div>
 
           {/* Events Before Halftime (< 45) */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3">
             {eventsBeforeHalftime.map(renderEventRow)}
           </div>
 
@@ -338,7 +338,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
   return (
     <div className="bg-[#181921]">
       <div className="max-w-[820px] mx-auto pt-10">
-      <div className="xl:w-[707px] bg-[#1D1E2B] rounded-t-lg">
+      <div className="xl:w-[707px] bg-[#1D1E2B] rounded-t-lg mx-auto">
         {/* Header with back button and league name */}
         <div className="flex items-center gap-4 px-4 py-4 border-b border-[#2A2A2A]">
           <button
