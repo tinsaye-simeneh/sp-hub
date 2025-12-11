@@ -37,7 +37,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
 
 
   return (
-    <div className="bg-bg-primary">
+    <div className="bg-[#181921]">
       <div className="w-full xl:max-w-[820px] xl:mx-auto xl:pt-10">
       <div className="w-full xl:w-[707px] bg-[#1D1E2B] rounded-t-lg xl:mx-auto">
         <div className="flex items-center gap-4 px-4 py-4 border-b border-border-primary">

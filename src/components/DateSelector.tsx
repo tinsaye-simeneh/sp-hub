@@ -5,7 +5,7 @@ const DateSelector: React.FC = () => {
   return (
     <>
       <div className="hidden md:flex items-center justify-center mb-6">
-        <div className="w-full max-w-[820px] h-[56px] flex items-center justify-between rounded-lg pt-2 pr-4 pb-2 pl-4 bg-bg-secondary relative">
+        <div className="w-full max-w-[820px] h-[56px] flex items-center justify-between rounded-lg pt-2 pr-4 pb-2 pl-4 bg-[#1D1E2B] relative">
           <button title="Previous Day" className="p-2 rounded-full transition-colors">
             <img src={chevronLeft} alt="chevron left" className="w-[20px] h-[20px]" />
           </button>
@@ -39,8 +39,8 @@ const DateSelector: React.FC = () => {
               </div>
 
               <div className="bg-bg-dateToday rounded-lg px-5 py-2 flex flex-col items-center leading-tight">
-                <span className="text-brand-primary text-[16px] font-medium">Today</span>
-                <span className="text-brand-primary text-[16px] font-medium">1 AUG</span>
+                <span className="text-brand-secondary text-[16px] font-medium">Today</span>
+                <span className="text-brand-secondary text-[16px] font-medium">1 AUG</span>
               </div>
 
               <div className="flex flex-col items-center leading-tight">
@@ -60,7 +60,7 @@ const DateSelector: React.FC = () => {
             aria-label="Open Calendar"
             className="w-11 h-11 rounded-full bg-bg-secondary flex items-center justify-center flex-shrink-0"
           >
-            <svg className="w-6 h-6 text-brand-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+            <svg className="w-6 h-6 text-brand-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3M6 11h12M6 21h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01M16 17h.01" />
             </svg>

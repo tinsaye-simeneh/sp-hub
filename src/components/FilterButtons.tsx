@@ -25,7 +25,7 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({ activeFilter, onFilterCha
 
       <button
         onClick={() => onFilterChange('live')}
-        className={`flex-1 md:flex-none md:w-[100px] h-[36px] bg-bg-secondary pt-2 pr-3 pb-2 pl-3 rounded-lg flex items-center justify-center gap-2 text-sm font-medium transition-colors group ${
+        className={`flex-1 md:flex-none md:w-[100px] h-[36px] bg-[#1D1E2B] pt-2 pr-3 pb-2 pl-3 rounded-lg flex items-center justify-center gap-2 text-sm font-medium transition-colors group ${
           activeFilter === 'live'
             ? 'text-text-primary'
             : 'text-text-secondary'
@@ -40,7 +40,7 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({ activeFilter, onFilterCha
 
       <button
         onClick={() => onFilterChange('favorites')}
-        className={`flex-1 md:flex-none md:w-[134px] h-[36px] bg-bg-secondary pt-2 pr-3 pb-2 pl-3 rounded-lg flex items-center justify-center gap-2 text-sm font-medium transition-colors group ${
+        className={`flex-1 md:flex-none md:w-[134px] h-[36px] bg-[#1D1E2B] pt-2 pr-3 pb-2 pl-3 rounded-lg flex items-center justify-center gap-2 text-sm font-medium transition-colors group ${
           activeFilter === 'favorites'
             ? 'text-text-primary'
             : 'text-text-secondary'

@@ -9,7 +9,7 @@ interface LeagueSectionProps {
 
 const LeagueSection: React.FC<LeagueSectionProps> = ({ leagueName, matches }) => {
   return (
-    <div className="w-full max-w-[780px] h-auto rounded-lg p-4 border-b border-border-primary mb-6 flex flex-col gap-2 bg-bg-secondary">
+    <div className="w-full max-w-[780px] h-auto rounded-lg p-4 border-b border-border-primary mb-6 flex flex-col gap-2 bg-[#1D1E2B]">
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-text-primary text-[14px] font-normal leading-[20px] font-inter">{leagueName}</h2>
         <button title="View All" className="text-text-secondary hover:text-text-primary transition-colors">
