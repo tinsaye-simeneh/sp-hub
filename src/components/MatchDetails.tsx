@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Match } from './MatchCard';
-import chevronLeft from '../../public/chevron-left.png';
+import ArrowLeft from '../../public/arrow-left.png';
 
 export interface MatchEvent {
   id: string;
@@ -18,13 +18,11 @@ export interface MatchEvent {
 
 interface EventsTimelineProps {
   events: MatchEvent[];
-  homeTeam: string;
-  awayTeam: string;
   homeScore: number;
   awayScore: number;
 }
 
-const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeTeam, awayTeam, homeScore, awayScore }) => {
+const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeScore, awayScore }) => {
   const getEventIcon = (type: MatchEvent['type']) => {
     switch (type) {
       case 'goal':
@@ -131,23 +129,91 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeTeam, awayT
     return minuteB - minuteA;
   });
 
-  // Split events: before halftime (< 45+2) and after halftime (>= 45+2)
+  // Split events: first half includes 45' and 45+X', so second half is strictly > 45
   const eventsAfterHalftime = sortedEvents.filter(event => {
     const minute = parseMinute(event.minute);
-    return minute >= 45;
+    return minute > 45;
   });
 
   const eventsBeforeHalftime = sortedEvents.filter(event => {
     const minute = parseMinute(event.minute);
-    return minute < 45;
+    return minute <= 45;
   });
+
+  const renderEventContent = (event: MatchEvent, isGoal: boolean) => {
+    const isSubstitution = event.type === 'substitution';
+
+    if (isSubstitution) {
+      return (
+        <div className="flex items-center gap-2">
+          <div className="flex-shrink-0">{getEventIcon(event.type)}</div>
+          <div className="flex flex-col gap-1 leading-tight">
+            <div className="text-[#FFFFFF] text-sm">{event.playerIn}</div>
+            <div className="text-[#B3B3B3] text-sm">{event.playerOut}</div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex items-center gap-2">
+        <div className={`flex-shrink-0 ${isGoal ? 'text-[#10B981]' : 'text-[#FFFFFF]'}`}>
+          {getEventIcon(event.type)}
+        </div>
+        <div className="text-[#FFFFFF] text-sm">{getEventText(event)}</div>
+      </div>
+    );
+  };
+
+  const renderEventRow = (event: MatchEvent) => {
+    const isGoal = event.type === 'goal';
+    const isHome = event.team === 'home';
+
+    return (
+      <div
+        key={event.id}
+        className="grid grid-cols-[1fr_64px_1fr] items-center gap-x-3 min-h-[40px]"
+      >
+        {/* Left column (home) */}
+        <div className="flex items-center justify-end">
+          {isHome ? (
+            <div className="flex items-center gap-3">
+              <div className="text-right">{renderEventContent(event, isGoal)}</div>
+              {/* Connector line (leave space due to column gap) */}
+              <div className="w-[40px] h-0.5 bg-[#2A2A2A] flex-shrink-0" />
+            </div>
+          ) : null}
+        </div>
+
+        {/* Center minute pill */}
+        <div className="flex justify-center">
+          <div
+            className={`${isGoal ? 'bg-[#10B981]' : 'bg-[#2A2A2A]'} text-white text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap`}
+          >
+            {event.minute}
+          </div>
+        </div>
+
+        {/* Right column (away) */}
+        <div className="flex items-center justify-start">
+          {!isHome ? (
+            <div className="flex items-center gap-3">
+              {/* Connector line */}
+              <div className="w-[40px] h-0.5 bg-[#2A2A2A] flex-shrink-0" />
+              <div className="text-left">{renderEventContent(event, isGoal)}</div>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="text-[#FFFFFF]">
       <h2 className="text-lg font-medium mb-6">Events</h2>
       
       <div className="relative pb-8">
-        <div className="space-y-1">
+        <div className="flex flex-col">
           {/* Fulltime Score Marker */}
           <div className="relative flex items-center justify-center py-3 mb-4">
             <div className="absolute left-0 right-0 h-0.5 bg-[#2A2A2A]" />
@@ -157,108 +223,9 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeTeam, awayT
           </div>
 
           {/* Events After Halftime (>= 45) */}
-          {eventsAfterHalftime.map((event) => {
-            const isGoal = event.type === 'goal';
-            const isHome = event.team === 'home';
-            const isSubstitution = event.type === 'substitution';
-            
-            return (
-              <div
-                key={event.id}
-                className="relative flex items-start justify-between mb-3"
-              >
-                {/* Home team events on the left */}
-                {isHome ? (
-                  <>
-                    <div className="flex-1 flex items-start justify-end pr-3">
-                      {isSubstitution ? (
-                        <div className="flex items-center gap-2 flex-row">
-                          {/* Icon */}
-                          <div className="flex-shrink-0">
-                            {getEventIcon(event.type)}
-                          </div>
-                          
-                          {/* Substitution: Players in column */}
-                          <div className="flex flex-col items-start gap-1">
-                            {/* Player In - White (on top) */}
-                            <div className="text-[#FFFFFF] text-sm">{event.playerIn}</div>
-                            {/* Player Out - Gray (below) */}
-                            <div className="text-[#B3B3B3] text-sm">{event.playerOut}</div>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-2 flex-row">
-                          {/* Icon */}
-                          <div className={`flex-shrink-0 ${isGoal ? 'text-[#10B981]' : 'text-[#FFFFFF]'}`}>
-                            {getEventIcon(event.type)}
-                          </div>
-                          
-                          {/* Event Text */}
-                          <div className="text-[#FFFFFF] text-sm text-left">
-                            {getEventText(event)}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Timestamp Pill in center */}
-                    <div className="flex-shrink-0 px-2">
-                      <div className={`${isGoal ? 'bg-[#10B981]' : 'bg-[#2A2A2A]'} text-white text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap`}>
-                        {event.minute}
-                      </div>
-                    </div>
-                    
-                    {/* Empty space on right */}
-                    <div className="flex-1"></div>
-                  </>
-                ) : (
-                  <>
-                    {/* Empty space on left */}
-                    <div className="flex-1"></div>
-                    
-                    {/* Timestamp Pill in center */}
-                    <div className="flex-shrink-0 px-2">
-                      <div className={`${isGoal ? 'bg-[#10B981]' : 'bg-[#2A2A2A]'} text-white text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap`}>
-                        {event.minute}
-                      </div>
-                    </div>
-                    
-                    {/* Away team events on the right */}
-                    <div className="flex-1 flex items-start justify-start pl-3">
-                      {isSubstitution ? (
-                        <div className="flex items-center gap-2 flex-row">
-                          {/* Icon */}
-                          <div className="flex-shrink-0">
-                            {getEventIcon(event.type)}
-                          </div>
-                          
-                          {/* Substitution: Players in column */}
-                          <div className="flex flex-col items-start gap-1">
-                            {/* Player In - White (on top) */}
-                            <div className="text-[#FFFFFF] text-sm">{event.playerIn}</div>
-                            {/* Player Out - Gray (below) */}
-                            <div className="text-[#B3B3B3] text-sm">{event.playerOut}</div>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-2 flex-row">
-                          {/* Icon */}
-                          <div className={`flex-shrink-0 ${isGoal ? 'text-[#10B981]' : 'text-[#FFFFFF]'}`}>
-                            {getEventIcon(event.type)}
-                          </div>
-                          
-                          {/* Event Text */}
-                          <div className="text-[#FFFFFF] text-sm text-left">
-                            {getEventText(event)}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </>
-                )}
-              </div>
-            );
-          })}
+          <div className="flex flex-col gap-4">
+            {eventsAfterHalftime.map(renderEventRow)}
+          </div>
 
           {/* Halftime Score Marker */}
           <div className="relative flex items-center justify-center py-3 my-4">
@@ -269,108 +236,9 @@ const EventsTimeline: React.FC<EventsTimelineProps> = ({ events, homeTeam, awayT
           </div>
 
           {/* Events Before Halftime (< 45) */}
-          {eventsBeforeHalftime.map((event) => {
-            const isGoal = event.type === 'goal';
-            const isHome = event.team === 'home';
-            const isSubstitution = event.type === 'substitution';
-            
-            return (
-              <div
-                key={event.id}
-                className="relative flex items-start justify-between mb-3"
-              >
-                {/* Home team events on the left */}
-                {isHome ? (
-                  <>
-                    <div className="flex-1 flex items-start justify-end pr-3">
-                      {isSubstitution ? (
-                        <div className="flex items-center gap-2 flex-row">
-                          {/* Icon */}
-                          <div className="flex-shrink-0">
-                            {getEventIcon(event.type)}
-                          </div>
-                          
-                          {/* Substitution: Players in column */}
-                          <div className="flex flex-col items-start gap-1">
-                            {/* Player In - White (on top) */}
-                            <div className="text-[#FFFFFF] text-sm">{event.playerIn}</div>
-                            {/* Player Out - Gray (below) */}
-                            <div className="text-[#B3B3B3] text-sm">{event.playerOut}</div>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-2 flex-row">
-                          {/* Icon */}
-                          <div className={`flex-shrink-0 ${isGoal ? 'text-[#10B981]' : 'text-[#FFFFFF]'}`}>
-                            {getEventIcon(event.type)}
-                          </div>
-                          
-                          {/* Event Text */}
-                          <div className="text-[#FFFFFF] text-sm text-left">
-                            {getEventText(event)}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Timestamp Pill in center */}
-                    <div className="flex-shrink-0 px-2">
-                      <div className={`${isGoal ? 'bg-[#10B981]' : 'bg-[#2A2A2A]'} text-white text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap`}>
-                        {event.minute}
-                      </div>
-                    </div>
-                    
-                    {/* Empty space on right */}
-                    <div className="flex-1"></div>
-                  </>
-                ) : (
-                  <>
-                    {/* Empty space on left */}
-                    <div className="flex-1"></div>
-                    
-                    {/* Timestamp Pill in center */}
-                    <div className="flex-shrink-0 px-2">
-                      <div className={`${isGoal ? 'bg-[#10B981]' : 'bg-[#2A2A2A]'} text-white text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap`}>
-                        {event.minute}
-                      </div>
-                    </div>
-                    
-                    {/* Away team events on the right */}
-                    <div className="flex-1 flex items-start justify-start pl-3">
-                      {isSubstitution ? (
-                        <div className="flex items-center gap-2 flex-row">
-                          {/* Icon */}
-                          <div className="flex-shrink-0">
-                            {getEventIcon(event.type)}
-                          </div>
-                          
-                          {/* Substitution: Players in column */}
-                          <div className="flex flex-col items-start gap-1">
-                            {/* Player In - White (on top) */}
-                            <div className="text-[#FFFFFF] text-sm">{event.playerIn}</div>
-                            {/* Player Out - Gray (below) */}
-                            <div className="text-[#B3B3B3] text-sm">{event.playerOut}</div>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-2 flex-row">
-                          {/* Icon */}
-                          <div className={`flex-shrink-0 ${isGoal ? 'text-[#10B981]' : 'text-[#FFFFFF]'}`}>
-                            {getEventIcon(event.type)}
-                          </div>
-                          
-                          {/* Event Text */}
-                          <div className="text-[#FFFFFF] text-sm text-left">
-                            {getEventText(event)}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </>
-                )}
-              </div>
-            );
-          })}
+          <div className="flex flex-col gap-4">
+            {eventsBeforeHalftime.map(renderEventRow)}
+          </div>
 
           {/* Kick Off Marker */}
           <div className="relative flex items-center justify-center py-3 mt-4">
@@ -431,7 +299,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
   ];
 
   const getStatusColor = () => {
-    if (matchData.status === 'ft') return 'bg-[#FF6B35]';
+    if (matchData.status === 'ft') return 'bg-[#EE5E52]';
     if (matchData.status === 'live' || matchData.status === 'ht') return 'bg-[#10B981]';
     return 'bg-[#808080]';
   };
@@ -469,14 +337,15 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
 
   return (
     <div className="bg-[#181921]">
-      <div className="max-w-[820px] mx-auto">
+      <div className="max-w-[820px] mx-auto pt-10">
+      <div className="w-[707px] bg-[#1D1E2B] rounded-t-lg">
         {/* Header with back button and league name */}
         <div className="flex items-center gap-4 px-4 py-4 border-b border-[#2A2A2A]">
           <button
             onClick={() => navigate(-1)}
             className="p-2 hover:bg-[#252525] rounded-full transition-colors"
           >
-            <img src={chevronLeft} alt="back" className="w-[20px] h-[20px]" />
+            <img src={ArrowLeft} alt="back" className="w-[24px] h-[24px]" />
           </button>
           <h1 className="text-[#FFFFFF] text-lg font-medium">{leagueName}</h1>
         </div>
@@ -489,7 +358,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
               <div className="relative">
                 {/* Yellow Card Indicator - Upper Right */}
                 {matchData.homeTeamCards?.yellow && matchData.homeTeamCards.yellow > 0 && (
-                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-[#FFD700] rounded flex items-center justify-center z-10">
+                  <div className="absolute -top-3 -right-5 w-5 h-5 bg-[#FFD700] rounded flex items-center justify-center z-10">
                     <span className="text-[#000] text-[10px] font-bold">{matchData.homeTeamCards.yellow}</span>
                   </div>
                 )}
@@ -500,11 +369,11 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
                   </div>
                 )}
                 
-                <div className="w-16 h-16 bg-[#1A1A1A] rounded-full flex items-center justify-center">
+                <div className="w-[48px] h-[48px] bg-[#1A1A1A] rounded-full flex items-center justify-center">
                   {matchData.homeTeam.logo ? (
-                    <img src={matchData.homeTeam.logo} alt={matchData.homeTeam.name} className="w-12 h-12" />
+                    <img src={matchData.homeTeam.logo} alt={matchData.homeTeam.name} className="w-[48px] h-[48px]" />
                   ) : (
-                    <div className="w-12 h-12 bg-[#808080] rounded-full" />
+                    <div className="w-[48px] h-[48px] bg-[#808080] rounded-full" />
                   )}
                 </div>
               </div>
@@ -512,14 +381,14 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
             </div>
 
             {/* Center: Date, Score, Status */}
-            <div className="flex flex-col items-center gap-2 flex-1">
+            <div className="flex flex-col items-center gap-2 flex-1 w-[48px]">
               <span className="text-[#B3B3B3] text-xs font-medium">{matchData.date || '11 AUG'}</span>
               <div className="flex items-center gap-2">
-                <span className="text-[#FFFFFF] text-2xl font-bold">{matchData.homeTeam.score ?? 0}</span>
-                <span className="text-[#FFFFFF] text-2xl font-bold">-</span>
-                <span className="text-[#FFFFFF] text-2xl font-bold">{matchData.awayTeam.score ?? 0}</span>
+                <span className="text-[#FFFFFF] text-[22px] font-bold">{matchData.homeTeam.score ?? 0}</span>
+                <span className="text-[#FFFFFF] text-[22px] font-bold">-</span>
+                <span className="text-[#FFFFFF] text-[22px] font-bold">{matchData.awayTeam.score ?? 0}</span>
               </div>
-              <div className={`${getStatusColor()} text-white text-xs font-medium px-3 py-1 rounded-full`}>
+              <div className={`${getStatusColor()} text-white text-xs font-medium p-1 rounded-sm`}>
                 {getStatusText()}
               </div>
             </div>
@@ -529,7 +398,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
               <div className="relative">
                 {/* Card Indicators - Upper Left (stacked if both present) */}
                 {matchData.awayTeamCards && (matchData.awayTeamCards.red > 0 || matchData.awayTeamCards.yellow > 0) && (
-                  <div className="absolute -top-1 -left-1 flex flex-col gap-0.5 z-10">
+                  <div className="absolute -top-3 -left-10 flex flex-col gap-0.5 z-10 flex-row">
                     {matchData.awayTeamCards.red > 0 && (
                       <div className="w-5 h-5 bg-[#FF0000] rounded flex items-center justify-center">
                         <span className="text-[#FFF] text-[10px] font-bold">{matchData.awayTeamCards.red}</span>
@@ -557,7 +426,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
         </div>
 
         {/* Tab Navigation */}
-        <div className="border-t border-[#2A2A2A] px-4 ">
+        <div className="border-b border-[#2A2A2A] px-4 ">
           <div className="flex items-center justify-center gap-1 overflow-x-auto scrollbar-hide">
             {tabs.map((tab) => (
               <button
@@ -577,14 +446,13 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
             ))}
           </div>
         </div>
+        </div>
 
         {/* Tab Content */}
         <div className="px-4 py-6">
           {activeTab === 'Events' && (
             <EventsTimeline
               events={mockEvents}
-              homeTeam={matchData.homeTeam.name}
-              awayTeam={matchData.awayTeam.name}
               homeScore={matchData.homeTeam.score ?? 0}
               awayScore={matchData.awayTeam.score ?? 0}
             />
