@@ -8,7 +8,7 @@ interface LeagueSectionProps {
 
 const LeagueSection: React.FC<LeagueSectionProps> = ({ leagueName, matches }) => {
   return (
-    <div className="w-[780px] h-auto rounded-lg p-4 border-b border-[#2A2A2A] mb-6 flex flex-col gap-2 bg-[#1D1E2B]">
+    <div className="w-full max-w-[780px] h-auto rounded-lg p-4 border-b border-[#2A2A2A] mb-6 flex flex-col gap-2 bg-[#1D1E2B]">
       {/* League Header */}
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-[#FFFFFF] text-[14px] font-normal leading-[20px] font-inter">{leagueName}</h2>

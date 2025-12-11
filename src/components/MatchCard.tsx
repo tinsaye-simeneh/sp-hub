@@ -68,7 +68,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
 
   return (
     <div 
-      className="w-[788px] h-[80px] border-b border-[#2A2A2A] relative cursor-pointer hover:bg-[#252525] transition-colors"
+      className="w-full max-w-[788px] h-auto min-h-[80px] border-b border-[#2A2A2A] relative cursor-pointer hover:bg-[#252525] transition-colors"
       onClick={handleMatchClick}
     >
       {/* Gradient Overlay for Live Matches - Starting from Left Border */}
@@ -131,6 +131,13 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
                   <span className="text-[#00FFA5] text-[8px] leading-[12px] font-medium mt-[2px]">PEN</span>
                 </div>
               )}
+              {match.indicators?.redCard === 'home' && (
+                <div
+                  className="w-[10px] h-[12px] bg-[#FF0000] rounded-[2px] flex-shrink-0"
+                  title="Red card"
+                  aria-label="Red card"
+                />
+              )}
             </div>
             {/* Home Team Scores */}
             {match.homeTeam.score !== undefined && (
@@ -170,6 +177,13 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
                   </svg>
                   <span className="text-[#00FFA5] text-[8px] leading-[12px] font-medium mt-[2px]">PEN</span>
                 </div>
+              )}
+              {match.indicators?.redCard === 'away' && (
+                <div
+                  className="w-[10px] h-[12px] bg-[#FF0000] rounded-[2px] flex-shrink-0"
+                  title="Red card"
+                  aria-label="Red card"
+                />
               )}
             </div>
             {/* Away Team Scores */}

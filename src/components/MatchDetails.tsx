@@ -337,7 +337,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
 
   return (
     <div className="bg-[#181921]">
-      <div className="w-full xl:max-w-[820px] xl:mx-auto pt-10">
+      <div className="w-full xl:max-w-[820px] xl:mx-auto xl:pt-10">
       <div className="w-full xl:w-[707px] bg-[#1D1E2B] rounded-t-lg xl:mx-auto">
         {/* Header with back button and league name */}
         <div className="flex items-center gap-4 px-4 py-4 border-b border-[#2A2A2A]">
