@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export interface Match {
   id: string;
@@ -17,6 +18,15 @@ export interface Match {
     aggregateScore?: number;
   };
   time?: string;
+  date?: string;
+  homeTeamCards?: {
+    yellow: number;
+    red: number;
+  };
+  awayTeamCards?: {
+    yellow: number;
+    red: number;
+  };
   indicators?: {
     aggregate?: 'home' | 'away';
     penalty?: 'home' | 'away';
@@ -29,7 +39,12 @@ interface MatchCardProps {
 }
 
 const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
+  const navigate = useNavigate();
   const isLive = match.status === 'live' || match.status === 'ht';
+
+  const handleMatchClick = () => {
+    navigate(`/match/${match.id}`, { state: { match } });
+  };
   
   const getBorderColor = () => {
     if (isLive) return 'border-l-[#10B981]';
@@ -52,7 +67,10 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
   };
 
   return (
-    <div className="w-[788px] h-[80px] border-b border-[#2A2A2A] relative">
+    <div 
+      className="w-[788px] h-[80px] border-b border-[#2A2A2A] relative cursor-pointer hover:bg-[#252525] transition-colors"
+      onClick={handleMatchClick}
+    >
       {/* Gradient Overlay for Live Matches - Starting from Left Border */}
       {isLive && (
         <div 

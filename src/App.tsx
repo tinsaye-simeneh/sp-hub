@@ -1,12 +1,19 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import MatchesDashboard from './components/MatchesDashboard';
+import MatchDetails from './components/MatchDetails';
 
 function App() {
   return (
-    <div className="bg-[#0F0F0F] text-[#FFFFFF] w-full">
-      <Header />
-      <MatchesDashboard />
-    </div>
+    <Router>
+      <div className="bg-[#0F0F0F] text-[#FFFFFF] w-full">
+        <Header />
+        <Routes>
+          <Route path="/" element={<MatchesDashboard />} />
+          <Route path="/match/:id" element={<MatchDetails />} />
+        </Routes>
+      </div>
+    </Router>
   )
 }
 

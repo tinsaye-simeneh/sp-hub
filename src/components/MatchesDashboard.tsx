@@ -66,15 +66,24 @@ const mockMatches: { league: string; matches: Match[] }[] = [
       },
       {
         id: '4',
-        status: 'ht',
-        statusText: 'HT',
+        status: 'ft',
+        statusText: 'FT',
         homeTeam: {
-          name: 'Newcastle United',
-          score: 0,
+          name: 'Arsenal',
+          score: 2,
         },
         awayTeam: {
           name: 'Liverpool',
           score: 1,
+        },
+        date: '11 AUG',
+        homeTeamCards: {
+          yellow: 2,
+          red: 0,
+        },
+        awayTeamCards: {
+          yellow: 1,
+          red: 1,
         },
       },
       {
