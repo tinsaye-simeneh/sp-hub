@@ -208,7 +208,7 @@ Currently, no environment variables are required. The API key is included in the
 
 ## 👤 Author
 
-Tinsaye Simeneh [https://github.com/tinsaye-simeneh] (https://github.com/tinsaye-simeneh)
+Tinsaye Simeneh [https://github.com/tinsaye-simeneh](https://github.com/tinsaye-simeneh)
 
 ## 🙏 Acknowledgments
 
