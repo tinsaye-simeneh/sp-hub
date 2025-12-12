@@ -22,14 +22,14 @@ const MatchesDashboard: React.FC = () => {
 
   const { getFavoriteMatches, getFavoriteCount, favoriteIds } = useFavorites();
 
-  const { matches: allMatches, loading: allLoading, error: allError } = useMatches({
+  const { matches: allMatches, loading: allLoading, error: allError, refetch: refetchAll } = useMatches({
     includePast: true,
     date: selectedDate,
     page: 1,
     limit: 1000, 
   });
   
-  const { matches: liveMatches, pagination: livePagination, loading: liveLoading, error: liveError } = useLiveMatches({
+  const { matches: liveMatches, pagination: livePagination, loading: liveLoading, error: liveError, refetch: refetchLive } = useLiveMatches({
     enabled: activeFilter === 'live',
     page: 1,
     limit: 1000, 
@@ -183,11 +183,9 @@ const MatchesDashboard: React.FC = () => {
             error={error}
             onRetry={() => {
               if (activeFilter === 'live') {
-                // Retry logic for live matches
-                window.location.reload();
+                refetchLive();
               } else {
-                // Retry logic for all matches
-                window.location.reload();
+                refetchAll();
               }
             }}
             title="Failed to load matches"

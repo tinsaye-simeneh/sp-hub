@@ -22,7 +22,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
   const { id } = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState<'Details' | 'Odds' | 'Lineups' | 'Events' | 'Stats' | 'Standings'>('Events');
 
-  const { match: apiMatch, events: apiEvents, loading, error } = useMatchDetails(id);
+  const { match: apiMatch, events: apiEvents, loading, error, refetch } = useMatchDetails(id);
 
   const matchFromState = (location.state as { match?: Match })?.match;
   
@@ -55,9 +55,14 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
           </div>
         )}
 
-        {error && !matchData && (
-          <div className="flex items-center justify-center py-12">
-            <div className="text-status-error">Error: {error}</div>
+        {error && !matchData && !loading && (
+          <div className="bg-[#1D1E2B] min-h-[calc(100vh-200px)]">
+            <ErrorFallback
+              error={error}
+              onRetry={refetch}
+              title="Failed to load match details"
+              message="We couldn't fetch the match details. Please check your connection and try again."
+            />
           </div>
         )}
 
