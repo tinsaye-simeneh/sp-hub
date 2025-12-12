@@ -17,6 +17,7 @@ export interface SportsDBEvent {
   strSport: string;
   idLeague: string;
   strLeague: string;
+  strLeagueBadge: string | null;
   strSeason: string | null;
   strDescriptionEN: string | null;
   strHomeTeam: string;
@@ -24,6 +25,8 @@ export interface SportsDBEvent {
   intHomeScore: string | null;
   intAwayScore: string | null;
   intRound: string | null;
+  intSpectators: string | null;
+  strOfficial: string | null;
   dateEvent: string;
   dateEventLocal: string | null;
   strDate: string | null;
@@ -31,11 +34,17 @@ export interface SportsDBEvent {
   strTimeLocal: string | null;
   strTVStation: string | null;
   idHomeTeam: string;
+  strHomeTeamBadge: string | null;
   idAwayTeam: string;
+  strAwayTeamBadge: string | null;
+  intScore: string | null;
+  intScoreVotes: string | null;
   strResult: string | null;
+  idVenue: string | null;
   strVenue: string | null;
   strCountry: string | null;
   strCity: string | null;
+  strGroup: string | null;
   strPoster: string | null;
   strSquare: string | null;
   strFanart: string | null;
@@ -46,8 +55,9 @@ export interface SportsDBEvent {
   strTweet2: string | null;
   strTweet3: string | null;
   strVideo: string | null;
-  strStatus: string;
+  strStatus: string | null;
   strPostponed: string;
+  strLocked: string | null;
   strTimestamp: string | null;
   dateEventISO: string | null;
   strTimeUTC: string | null;
@@ -145,7 +155,7 @@ function convertStatus(strStatus: string, intHomeScore: string | null, intAwaySc
  * Get status text from SportsDB event
  */
 function getStatusText(event: SportsDBEvent): string {
-  const status = event.strStatus?.toLowerCase() || '';
+  const status = (event.strStatus || '').toLowerCase();
   
   if (status.includes('live') || status.includes('1h') || status.includes('2h')) {
     // Extract minute if available
@@ -159,6 +169,10 @@ function getStatusText(event: SportsDBEvent): string {
     return 'HT';
   }
   if (status.includes('finished') || status.includes('ft')) {
+    return 'FT';
+  }
+  // If status is null but scores exist, it's finished
+  if (event.intHomeScore !== null && event.intAwayScore !== null) {
     return 'FT';
   }
   if (event.strTime) {
@@ -249,13 +263,16 @@ function parseCardDetails(
 export function convertToMatch(event: SportsDBEvent): Match {
   const homeScore = event.intHomeScore ? parseInt(event.intHomeScore, 10) : undefined;
   const awayScore = event.intAwayScore ? parseInt(event.intAwayScore, 10) : undefined;
-  const status = convertStatus(event.strStatus, event.intHomeScore, event.intAwayScore);
+  const status = convertStatus(event.strStatus || '', event.intHomeScore, event.intAwayScore);
   
-  // Try to get team logos from the event if available
-  // The SportsDB API may include team badge URLs in some responses
-  // For now, we'll leave logos as optional since they may need separate team lookup
-  const homeTeamLogo = (event as any).strHomeTeamBadge || (event as any).strHomeLogo || undefined;
-  const awayTeamLogo = (event as any).strAwayTeamBadge || (event as any).strAwayLogo || undefined;
+  // Get team badges/logos from the event
+  const homeTeamLogo = event.strHomeTeamBadge || undefined;
+  const awayTeamLogo = event.strAwayTeamBadge || undefined;
+  
+  // Parse additional fields
+  const round = event.intRound ? parseInt(event.intRound, 10) : undefined;
+  const spectators = event.intSpectators ? parseInt(event.intSpectators, 10) : undefined;
+  const postponed = event.strPostponed === 'yes';
   
   return {
     id: event.idEvent,
@@ -272,7 +289,19 @@ export function convertToMatch(event: SportsDBEvent): Match {
       logo: awayTeamLogo,
     },
     date: formatDate(event.dateEvent),
+    fullDate: event.dateEvent || undefined, // Keep original date for filtering
     time: event.strTime || undefined,
+    league: event.strLeague || undefined,
+    leagueBadge: event.strLeagueBadge || undefined,
+    season: event.strSeason || undefined,
+    sport: event.strSport || undefined,
+    round,
+    postponed,
+    venue: event.strVenue || undefined,
+    city: event.strCity || undefined,
+    country: event.strCountry || undefined,
+    spectators,
+    official: event.strOfficial || undefined,
   };
 }
 
@@ -589,6 +618,40 @@ export async function fetchTeamsByLeague(leagueId: string): Promise<SportsDBTeam
     return response.teams || [];
   } catch (error) {
     console.error('Error fetching teams by league:', error);
+    throw error;
+  }
+}
+
+/**
+ * SportsDB League interface
+ */
+export interface SportsDBLeague {
+  idLeague: string;
+  strLeague: string;
+  strSport: string;
+  strLeagueAlternate: string | null;
+}
+
+export interface SportsDBLeaguesResponse {
+  leagues?: SportsDBLeague[];
+  error?: string;
+}
+
+/**
+ * Fetch all leagues
+ */
+export async function fetchAllLeagues(): Promise<SportsDBLeague[]> {
+  try {
+    const url = API_ENDPOINTS.ALL_LEAGUES();
+    const response = await fetchAPI<SportsDBLeaguesResponse>(url);
+    
+    if (response.error) {
+      throw new Error(response.error);
+    }
+    
+    return response.leagues || [];
+  } catch (error) {
+    console.error('Error fetching all leagues:', error);
     throw error;
   }
 }

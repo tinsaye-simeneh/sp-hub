@@ -13,9 +13,45 @@ const MatchDetailsTab: React.FC<MatchDetailsTabProps> = ({ match }) => {
         <h3 className="text-text-primary text-lg font-semibold mb-4">Match Information</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {match.league && (
+            <div className="flex items-center gap-2">
+              {match.leagueBadge && (
+                <img 
+                  src={match.leagueBadge} 
+                  alt={match.league} 
+                  className="w-6 h-6 object-contain"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              )}
+              <div>
+                <span className="text-text-secondary text-sm block">League</span>
+                <p className="text-text-primary font-medium">{match.league}</p>
+              </div>
+            </div>
+          )}
+          {match.sport && (
             <div>
-              <span className="text-text-secondary text-sm">League</span>
-              <p className="text-text-primary font-medium">{match.league}</p>
+              <span className="text-text-secondary text-sm">Sport</span>
+              <p className="text-text-primary font-medium">{match.sport}</p>
+            </div>
+          )}
+          {match.season && (
+            <div>
+              <span className="text-text-secondary text-sm">Season</span>
+              <p className="text-text-primary font-medium">{match.season}</p>
+            </div>
+          )}
+          {match.round !== undefined && (
+            <div>
+              <span className="text-text-secondary text-sm">Round</span>
+              <p className="text-text-primary font-medium">{match.round}</p>
+            </div>
+          )}
+          {match.postponed && (
+            <div>
+              <span className="text-text-secondary text-sm">Status</span>
+              <p className="text-yellow-400 font-medium">Postponed</p>
             </div>
           )}
           {match.venue && (
@@ -46,6 +82,18 @@ const MatchDetailsTab: React.FC<MatchDetailsTabProps> = ({ match }) => {
             <div>
               <span className="text-text-secondary text-sm">Time</span>
               <p className="text-text-primary font-medium">{match.time}</p>
+            </div>
+          )}
+          {match.spectators !== undefined && (
+            <div>
+              <span className="text-text-secondary text-sm">Spectators</span>
+              <p className="text-text-primary font-medium">{match.spectators.toLocaleString()}</p>
+            </div>
+          )}
+          {match.official && (
+            <div>
+              <span className="text-text-secondary text-sm">Official</span>
+              <p className="text-text-primary font-medium">{match.official}</p>
             </div>
           )}
         </div>

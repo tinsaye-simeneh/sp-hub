@@ -47,7 +47,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
         <div className="flex items-center gap-4 px-4 py-4 border-b border-border-primary">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 hover:bg-bg-hover rounded-full transition-colors"
+            className="p-2 hover:bg-bg-hover rounded-full transition-colors cursor-pointer"
           >
             <img src={arrowLeft} alt="back" className="w-[24px] h-[24px]" />
           </button>

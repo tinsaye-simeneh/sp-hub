@@ -7,7 +7,7 @@ const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-brand-primary border-b border-border-primary w-full top-0 sticky z-50 overflow-x-hidden">
+    <header className="bg-brand-primary border-b border-border-primary w-full top-0 sticky z-50 overflow-x-hidden top-0 sticky z-50">
       <div className="max-w-[1440px] mx-auto px-4 py-1 w-full">
         <div className="flex items-center justify-between">
           <div>

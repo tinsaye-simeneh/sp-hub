@@ -3,12 +3,11 @@
  */
 
 import { useState, useEffect, useRef } from 'react';
-import { fetchEventsByLeague, PaginatedResponse } from '../services/api';
+import { fetchEventsByDate, PaginatedResponse } from '../services/api';
 import { Match } from '../types/match';
-import { DEFAULT_LEAGUE_ID, LIVE_POLLING_INTERVAL } from '../constants/api';
+import { LIVE_POLLING_INTERVAL } from '../constants/api';
 
 interface UseLiveMatchesOptions {
-  leagueId?: string;
   enabled?: boolean;
   page?: number;
   limit?: number;
@@ -31,7 +30,7 @@ interface UseLiveMatchesReturn {
 }
 
 export function useLiveMatches(options: UseLiveMatchesOptions = {}): UseLiveMatchesReturn {
-  const { leagueId = DEFAULT_LEAGUE_ID, enabled = true, page: initialPage = 1, limit = 10 } = options;
+  const { enabled = true, page: initialPage = 1, limit = 10 } = options;
   const [page, setPage] = useState(initialPage);
   const [matches, setMatches] = useState<Match[]>([]);
   const [pagination, setPagination] = useState({
@@ -49,18 +48,29 @@ export function useLiveMatches(options: UseLiveMatchesOptions = {}): UseLiveMatc
   const fetchMatches = async () => {
     try {
       setError(null);
-      const result: PaginatedResponse<Match> = await fetchEventsByLeague(leagueId, page, limit);
+      // Fetch today's matches from all leagues with a large limit to get all matches
+      const today = new Date().toISOString().split('T')[0];
+      // Use a large limit to get all matches, then filter and paginate client-side
+      const result: PaginatedResponse<Match> = await fetchEventsByDate(today, 1, 1000);
       
-      // Filter for live matches only
+      // Filter for live matches only (live or half-time)
       const liveMatches = result.data.filter(
         (match) => match.status === 'live' || match.status === 'ht'
       );
       
-      setMatches(liveMatches);
+      // Apply client-side pagination to live matches
+      const startIndex = (page - 1) * limit;
+      const endIndex = startIndex + limit;
+      const paginatedLiveMatches = liveMatches.slice(startIndex, endIndex);
+      
+      setMatches(paginatedLiveMatches);
       setPagination({
-        ...result.pagination,
+        page,
+        limit,
         total: liveMatches.length,
         totalPages: Math.ceil(liveMatches.length / limit),
+        hasNextPage: endIndex < liveMatches.length,
+        hasPreviousPage: page > 1,
       });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch live matches';
@@ -92,7 +102,7 @@ export function useLiveMatches(options: UseLiveMatchesOptions = {}): UseLiveMatc
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [leagueId, enabled, page, limit]);
+  }, [enabled, page, limit]);
 
   return {
     matches,

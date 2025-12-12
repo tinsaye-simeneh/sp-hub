@@ -16,6 +16,7 @@ export interface Match {
   };
   time?: string;
   date?: string;
+  fullDate?: string; // Original date in YYYY-MM-DD format for filtering
   homeTeamCards?: {
     yellow: number;
     red: number;
@@ -31,9 +32,16 @@ export interface Match {
   };
   // Additional details from API
   league?: string;
+  leagueBadge?: string;
+  season?: string;
+  sport?: string;
+  round?: number;
+  postponed?: boolean;
   venue?: string;
   city?: string;
   country?: string;
+  spectators?: number;
+  official?: string;
   homeFormation?: string;
   awayFormation?: string;
   homeShots?: number;

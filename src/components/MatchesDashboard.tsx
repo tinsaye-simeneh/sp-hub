@@ -3,40 +3,70 @@ import LeagueSection from './LeagueSection';
 import DateSelector from './DateSelector';
 import FilterButtons from './FilterButtons';
 import Loader from './Loader';
-import Pagination from './Pagination';
 import { useMatches } from '../hooks/useMatches';
 import { useLiveMatches } from '../hooks/useLiveMatches';
 import { useFavorites } from '../hooks/useFavorites';
-import { fetchEventsByLeague } from '../services/api';
+import { fetchEventsByDate, fetchEventsByLeague } from '../services/api';
 import { Match } from '../types/match';
-import { DEFAULT_LEAGUE_ID } from '../constants/api';
+
+const PREMIER_LEAGUE_ID = '4328';
+const PREMIER_LEAGUE_NAME = 'Premier League';
 
 const MatchesDashboard: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'live' | 'favorites'>('all');
   const [selectedDate, setSelectedDate] = useState<string | undefined>(undefined);
-  const [page, setPage] = useState(1);
-  const limit = 10;
   const [liveCount, setLiveCount] = useState(0);
+  const [premierLeagueMatches, setPremierLeagueMatches] = useState<Match[]>([]);
+  const [premierLeagueLoading, setPremierLeagueLoading] = useState(false);
 
   const { getFavoriteMatches, getFavoriteCount, favoriteIds } = useFavorites();
 
-  const { matches: allMatches, pagination: allPagination, loading: allLoading, error: allError, setPage: setAllPage } = useMatches({
+  const { matches: allMatches, loading: allLoading, error: allError } = useMatches({
     includePast: true,
     date: selectedDate,
-    page,
-    limit,
+    page: 1,
+    limit: 1000, 
   });
   
-  const { matches: liveMatches, pagination: livePagination, loading: liveLoading, error: liveError, setPage: setLivePage } = useLiveMatches({
+  const { matches: liveMatches, pagination: livePagination, loading: liveLoading, error: liveError } = useLiveMatches({
     enabled: activeFilter === 'live',
-    page,
-    limit,
+    page: 1,
+    limit: 1000, 
   });
+
+  useEffect(() => {
+    const fetchPremierLeague = async () => {
+      try {
+        setPremierLeagueLoading(true);
+
+        const result = await fetchEventsByLeague(PREMIER_LEAGUE_ID, 1, 1000);
+        
+        let filteredMatches = result.data;
+        if (selectedDate) {
+          filteredMatches = result.data.filter((match: Match) => {
+            if (!match.fullDate) return false;
+            return match.fullDate === selectedDate;
+          });
+        }
+        
+        console.log(`Fetched ${result.data.length} Premier League matches, showing ${filteredMatches.length} after date filter`);
+        setPremierLeagueMatches(filteredMatches);
+      } catch (error) {
+        console.error('Error fetching Premier League matches:', error);
+        setPremierLeagueMatches([]);
+      } finally {
+        setPremierLeagueLoading(false);
+      }
+    };
+
+    fetchPremierLeague();
+  }, [selectedDate]);
 
   useEffect(() => {
     const fetchLiveCount = async () => {
       try {
-        const result = await fetchEventsByLeague(DEFAULT_LEAGUE_ID, 1, 1000);
+          const today = new Date().toISOString().split('T')[0];
+        const result = await fetchEventsByDate(today, 1, 1000);
         const liveMatches = result.data.filter(
           (match: Match) => match.status === 'live' || match.status === 'ht'
         );
@@ -65,28 +95,65 @@ const MatchesDashboard: React.FC = () => {
     return allMatches;
   }, [activeFilter, allMatches, liveMatches, favoriteMatches]);
 
-  const currentPagination = activeFilter === 'live' ? livePagination : allPagination;
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-    if (activeFilter === 'live') {
-      setLivePage(newPage);
-    } else {
-      setAllPage(newPage);
-    }
+
+  const isPremierLeague = (match: Match): boolean => {
+    const leagueName = match.league?.toLowerCase() || '';
+    return leagueName.includes('premier league') || 
+           leagueName.includes('english premier') ||
+           leagueName === 'premier league';
   };
 
-  const groupedMatches = useMemo(() => {
-    if (displayMatches.length === 0) {
-      return [];
+  const allMatchesCount = useMemo(() => {
+    if (activeFilter === 'live') {
+      return livePagination.total;
     }
-    
-    return [{
-      league: 'English Premier League',
-      matches: displayMatches,
-    }];
-  }, [displayMatches]);
+    if (activeFilter === 'favorites') {
+      return getFavoriteCount();
+    }
+    const nonPremierCount = allMatches.filter(match => !isPremierLeague(match)).length;
+    return nonPremierCount + premierLeagueMatches.length;
+  }, [activeFilter, allMatches, premierLeagueMatches, livePagination.total, getFavoriteCount]);
 
-  const loading = activeFilter === 'live' ? liveLoading : allLoading;
+  const groupedMatches = useMemo(() => {
+    const nonPremierMatches = displayMatches.filter(match => !isPremierLeague(match));
+    
+    const leagueMap = new Map<string, { matches: Match[]; badge?: string }>();
+    
+    nonPremierMatches.forEach((match) => {
+      const leagueName = match.league || 'Other Leagues';
+      if (!leagueMap.has(leagueName)) {
+        leagueMap.set(leagueName, { matches: [], badge: match.leagueBadge });
+      }
+      leagueMap.get(leagueName)!.matches.push(match);
+      if (match.leagueBadge && !leagueMap.get(leagueName)!.badge) {
+        leagueMap.get(leagueName)!.badge = match.leagueBadge;
+      }
+    });
+    
+    const otherLeagues = Array.from(leagueMap.entries()).map(([league, data]) => ({
+      league,
+      matches: data.matches,
+      badge: data.badge,
+    }));
+    
+    const shouldShowPremierLeague = activeFilter === 'all' && premierLeagueMatches.length > 0;
+    const premierLeagueSection = shouldShowPremierLeague ? [{
+      league: premierLeagueMatches[0]?.league || PREMIER_LEAGUE_NAME,
+      matches: premierLeagueMatches,
+      badge: premierLeagueMatches[0]?.leagueBadge,
+    }] : [];
+    
+    console.log('Grouped matches:', {
+      premierLeagueCount: premierLeagueMatches.length,
+      premierLeagueSection: premierLeagueSection.length,
+      otherLeaguesCount: otherLeagues.length,
+      activeFilter
+    });
+    
+    return [...premierLeagueSection, ...otherLeagues];
+  }, [displayMatches, premierLeagueMatches, activeFilter]);
+
+  const loading = activeFilter === 'live' ? liveLoading : (allLoading || premierLeagueLoading);
   const error = activeFilter === 'live' ? liveError : allError;
 
   return (
@@ -99,7 +166,7 @@ const MatchesDashboard: React.FC = () => {
         <FilterButtons 
           activeFilter={activeFilter} 
           onFilterChange={setActiveFilter}
-          allCount={allPagination.total}
+          allCount={allMatchesCount}
           liveCount={liveCount}
           favoritesCount={getFavoriteCount()}
         />
@@ -117,33 +184,22 @@ const MatchesDashboard: React.FC = () => {
         )}
 
         {!loading && !error && (
-          <>
-            <div>
-              {groupedMatches.length > 0 ? (
-                groupedMatches.map((section) => (
-                  <LeagueSection
-                    key={section.league}
-                    leagueName={section.league}
-                    matches={section.matches}
-                  />
-                ))
-              ) : (
-                <div className="flex items-center justify-center py-12">
-                  <div className="text-text-secondary">No matches found</div>
-                </div>
-              )}
-            </div>
-
-            {currentPagination.totalPages > 1 && (
-              <div className="mt-6">
-                <Pagination
-                  currentPage={currentPagination.page}
-                  totalPages={currentPagination.totalPages}
-                  onPageChange={handlePageChange}
+          <div>
+            {groupedMatches.length > 0 ? (
+              groupedMatches.map((section) => (
+                <LeagueSection
+                  key={section.league}
+                  leagueName={section.league}
+                  matches={section.matches}
+                  leagueBadge={section.badge}
                 />
+              ))
+            ) : (
+              <div className="flex items-center justify-center py-12">
+                <div className="text-text-secondary">No matches found</div>
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

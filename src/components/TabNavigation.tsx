@@ -24,7 +24,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
           <button
             key={tab}
             onClick={() => onTabChange(tab)}
-            className={`px-4 py-3 text-sm font-medium transition-colors whitespace-nowrap relative ${
+            className={`px-4 py-3 text-sm font-medium transition-colors whitespace-nowrap relative cursor-pointer ${
               activeTab === tab
                 ? 'text-brand-secondary'
                 : 'text-text-secondary hover:text-text-primary'

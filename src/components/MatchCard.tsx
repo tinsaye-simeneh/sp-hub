@@ -28,10 +28,60 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
       case 'ht':
         return 'text-status-live';
       case 'ft':
-        return 'text-status-error';
+        return 'text-red-500/70'; // Red with 70% opacity
+      case 'scheduled':
+        return 'text-text-tertiary';
       default:
         return 'text-text-primary';
     }
+  };
+
+  // Format time to show only hour and minute (HH:mm)
+  const formatTime = (time?: string): string => {
+    if (!time) return '';
+    // Handle formats like "22:00:00", "22:00", "8:00"
+    const timeMatch = time.match(/(\d{1,2}):(\d{2})/);
+    if (timeMatch) {
+      const hours = timeMatch[1];
+      const minutes = timeMatch[2];
+      return `${hours}:${minutes}`;
+    }
+    return time;
+  };
+
+  // Get first letter of team name
+  const getFirstLetter = (name: string): string => {
+    if (!name) return '';
+    return name.trim().charAt(0).toUpperCase();
+  };
+
+  // Generate a consistent color for a team based on their name
+  const getTeamColor = (name: string): string => {
+    if (!name) return 'bg-bg-tertiary';
+    
+    // Generate a hash from the team name for consistent colors
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    
+    // Use the hash to pick from a palette of nice colors
+    const colors = [
+      'bg-blue-500',
+      'bg-purple-500',
+      'bg-pink-500',
+      'bg-indigo-500',
+      'bg-cyan-500',
+      'bg-teal-500',
+      'bg-green-500',
+      'bg-emerald-500',
+      'bg-yellow-500',
+      'bg-orange-500',
+      'bg-red-500',
+      'bg-rose-500',
+    ];
+    
+    return colors[Math.abs(hash) % colors.length];
   };
 
   return (
@@ -47,10 +97,17 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
           }}
         />
       )}
+      {match.postponed && (
+        <div className="absolute top-2 right-16 px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-[10px] font-medium rounded z-20">
+          POSTPONED
+        </div>
+      )}
       <div className="flex items-start gap-4 px-4 pt-2 pb-1 h-full relative z-10">
-        <div className={`w-[56px] h-[60px] flex flex-col items-center justify-center gap-1 border-l-4 ${getBorderColor()} flex-shrink-0`}>
+        <div className={`w-[56px] h-[60px] flex flex-col items-center justify-center gap-1 border-l-4 ${getBorderColor()} flex-shrink-0 ${match.status === 'scheduled' ? 'pl-2' : ''}`}>
           {match.status === 'scheduled' ? (
-            <span className="text-text-primary text-sm font-medium">{match.time}</span>
+            <span className={`${getStatusTextColor()} text-sm font-medium`}>
+              {formatTime(match.time)}
+            </span>
           ) : (
             <>
               <span className={`${getStatusTextColor()} text-sm font-medium`}>
@@ -69,15 +126,38 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
 
         <div className="flex-1 flex flex-col justify-between h-[56px]">
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 flex-1">
-              <div className="w-8 h-8 bg-bg-tertiary rounded-full flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-2 flex-1 min-w-0">
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 relative ${
+                match.homeTeam.logo ? 'bg-bg-tertiary' : getTeamColor(match.homeTeam.name)
+              }`}>
                 {match.homeTeam.logo ? (
-                  <img src={match.homeTeam.logo} alt={match.homeTeam.name} className="w-[16px] h-[16px]" />
+                  <img 
+                    src={match.homeTeam.logo} 
+                    alt={match.homeTeam.name} 
+                    className="w-[16px] h-[16px] object-contain"
+                    onError={(e) => {
+                      // Hide image and show letter when it fails to load
+                      const img = e.target as HTMLImageElement;
+                      const parent = img.parentElement;
+                      if (parent) {
+                        img.style.display = 'none';
+                        parent.className = parent.className.replace('bg-bg-tertiary', getTeamColor(match.homeTeam.name));
+                        if (!parent.querySelector('.team-initial')) {
+                          const initial = document.createElement('span');
+                          initial.className = 'team-initial text-white text-xs font-semibold';
+                          initial.textContent = getFirstLetter(match.homeTeam.name);
+                          parent.appendChild(initial);
+                        }
+                      }
+                    }}
+                  />
                 ) : (
-                  <div className="w-4 h-4 bg-text-tertiary rounded-full" />
+                  <span className="text-white text-xs font-semibold">
+                    {getFirstLetter(match.homeTeam.name)}
+                  </span>
                 )}
               </div>
-              <span className="text-text-primary text-sm font-medium">{match.homeTeam.name}</span>
+              <span className="text-text-primary text-sm font-medium truncate">{match.homeTeam.name}</span>
               {match.indicators?.aggregate === 'home' && (
                 <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-[#26273B]">
                   <svg className="w-3 h-3 text-brand-secondary" fill="currentColor" viewBox="0 0 20 20">
@@ -116,15 +196,38 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
           </div>
 
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 flex-1">
-              <div className="w-8 h-8 bg-bg-tertiary rounded-full flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-2 flex-1 min-w-0">
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 relative ${
+                match.awayTeam.logo ? 'bg-bg-tertiary' : getTeamColor(match.awayTeam.name)
+              }`}>
                 {match.awayTeam.logo ? (
-                  <img src={match.awayTeam.logo} alt={match.awayTeam.name} className="w-[16px] h-[16px]" />
+                  <img 
+                    src={match.awayTeam.logo} 
+                    alt={match.awayTeam.name} 
+                    className="w-[16px] h-[16px] object-contain"
+                    onError={(e) => {
+                      // Hide image and show letter when it fails to load
+                      const img = e.target as HTMLImageElement;
+                      const parent = img.parentElement;
+                      if (parent) {
+                        img.style.display = 'none';
+                        parent.className = parent.className.replace('bg-bg-tertiary', getTeamColor(match.awayTeam.name));
+                        if (!parent.querySelector('.team-initial')) {
+                          const initial = document.createElement('span');
+                          initial.className = 'team-initial text-white text-xs font-semibold';
+                          initial.textContent = getFirstLetter(match.awayTeam.name);
+                          parent.appendChild(initial);
+                        }
+                      }
+                    }}
+                  />
                 ) : (
-                  <div className="w-[16px] h-[16px] bg-text-tertiary rounded-full" />
+                  <span className="text-white text-xs font-semibold">
+                    {getFirstLetter(match.awayTeam.name)}
+                  </span>
                 )}
               </div>
-              <span className="text-text-primary text-sm font-medium">{match.awayTeam.name}</span>
+              <span className="text-text-primary text-sm font-medium truncate">{match.awayTeam.name}</span>
               {match.indicators?.aggregate === 'away' && (
                 <div className="w-[35px] h-[14px] flex items-center justify-center gap-0.5 rounded-[100px] p-1 bg-[#26273B]">
                   <svg className="w-3 h-3 text-brand-secondary" fill="currentColor" viewBox="0 0 20 20">
@@ -163,7 +266,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
           </div>
         </div>
 
-        <button title="More options" className="p-2 hover:bg-bg-hover rounded-full transition-colors flex-shrink-0 self-center">
+        <button title="More options" className="p-2 hover:bg-bg-hover rounded-full transition-colors flex-shrink-0 self-center cursor-pointer">
           <svg className="w-5 h-5 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
           </svg>

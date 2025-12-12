@@ -10,14 +10,14 @@ const DateSelector: React.FC<DateSelectorProps> = ({ onDateChange: _onDateChange
     <>
       <div className="hidden md:flex items-center justify-center mb-6">
         <div className="w-full max-w-[820px] h-[56px] flex items-center justify-between rounded-lg pt-2 pr-4 pb-2 pl-4 bg-[#1D1E2B] relative">
-          <button title="Previous Day" className="p-2 rounded-full transition-colors">
+          <button title="Previous Day" className="p-2 rounded-full transition-colors cursor-pointer">
             <img src={chevronLeft} alt="chevron left" className="w-[20px] h-[20px]" />
           </button>
           <div className="flex items-center gap-2 absolute left-1/2 transform -translate-x-1/2">
             <img src={calendar} alt="calendar" className="w-[24px] h-[24px]" />
             <span className="text-text-primary text-[14px] font-medium">Today</span>
           </div>
-          <button title="Next Day" className="p-2 rounded-full transition-colors">
+          <button title="Next Day" className="p-2 rounded-full transition-colors cursor-pointer">
             <img src={chevronRight} alt="chevron right" className="w-[20px] h-[20px]" />
           </button>
         </div>
@@ -62,7 +62,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({ onDateChange: _onDateChange
           <button
             title="Open Calendar"
             aria-label="Open Calendar"
-            className="w-11 h-11 rounded-full bg-bg-secondary flex items-center justify-center flex-shrink-0"
+            className="w-11 h-11 rounded-full bg-bg-secondary flex items-center justify-center flex-shrink-0 cursor-pointer"
           >
             <svg className="w-6 h-6 text-brand-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3M6 11h12M6 21h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />

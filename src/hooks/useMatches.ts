@@ -3,12 +3,10 @@
  */
 
 import { useState, useEffect } from 'react';
-import { fetchEventsByLeague, fetchEventsByDate, PaginatedResponse } from '../services/api';
+import { fetchEventsByDate, PaginatedResponse } from '../services/api';
 import { Match } from '../types/match';
-import { DEFAULT_LEAGUE_ID } from '../constants/api';
 
 interface UseMatchesOptions {
-  leagueId?: string;
   date?: string;
   includePast?: boolean;
   page?: number;
@@ -32,7 +30,7 @@ interface UseMatchesReturn {
 }
 
 export function useMatches(options: UseMatchesOptions = {}): UseMatchesReturn {
-  const { leagueId = DEFAULT_LEAGUE_ID, date, includePast = false, page: initialPage = 1, limit = 10 } = options;
+  const { date, includePast = false, page: initialPage = 1, limit = 10 } = options;
   const [page, setPage] = useState(initialPage);
   const [matches, setMatches] = useState<Match[]>([]);
   const [pagination, setPagination] = useState({
@@ -51,15 +49,11 @@ export function useMatches(options: UseMatchesOptions = {}): UseMatchesReturn {
       setLoading(true);
       setError(null);
 
-      let result: PaginatedResponse<Match>;
-
-      if (date) {
-        // Fetch matches for specific date
-        result = await fetchEventsByDate(date, page, limit);
-      } else {
-        // Fetch all events by league (includes all teams in the league)
-        result = await fetchEventsByLeague(leagueId, page, limit);
-      }
+      // Use today's date if no date is provided
+      const targetDate = date || new Date().toISOString().split('T')[0];
+      
+      // Fetch matches for the specified date (gets all leagues)
+      const result: PaginatedResponse<Match> = await fetchEventsByDate(targetDate, page, limit);
 
       setMatches(result.data);
       setPagination(result.pagination);
@@ -74,7 +68,7 @@ export function useMatches(options: UseMatchesOptions = {}): UseMatchesReturn {
 
   useEffect(() => {
     fetchMatches();
-  }, [leagueId, date, includePast, page, limit]);
+  }, [date, includePast, page, limit]);
 
   return {
     matches,
