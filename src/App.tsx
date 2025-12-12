@@ -6,7 +6,7 @@ import MatchDetails from './components/MatchDetails';
 function App() {
   return (
     <Router>
-      <div className="bg-[#0F0F0F] text-[#FFFFFF] w-full">
+      <div className="bg-[#0F0F0F] text-[#FFFFFF] w-full min-h-screen overflow-x-hidden">
         <Header />
         <Routes>
           <Route path="/" element={<MatchesDashboard />} />

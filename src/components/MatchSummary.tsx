@@ -20,7 +20,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({ match }) => {
   };
 
   return (
-    <div className="px-4 py-6 w-full xl:w-[680px] xl:mx-auto">
+    <div className="px-4 py-6 w-full max-w-[680px] mx-auto">
       <div className="flex items-center justify-between">
         <div className="flex flex-col items-center gap-2 flex-1 relative">
           <div className="relative">

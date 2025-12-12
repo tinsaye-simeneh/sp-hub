@@ -7,9 +7,9 @@ const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-brand-primary border-b border-border-primary w-screen top-0 sticky z-50">
-      <div className="max-w-[1440px] mx-auto px-4 py-1">
-        <div className="flex items-center justify-between">
+    <header className="bg-brand-primary border-b border-border-primary w-full fixed top-0 left-0 right-0 z-[100]">
+      <div className="max-w-[1440px] lg:h-[70px] h-[66px] mx-auto px-4 w-full flex items-center">
+        <div className="flex items-center justify-between w-full">
           <div>
             <img src={logo} alt="logo" className="w-[120px] md:w-[200px] h-auto md:h-[60px]" />
           </div>
@@ -65,10 +65,10 @@ const Header: React.FC = () => {
               <img src={eg} alt="flag" className="w-[24px] h-[24px]" />
             </button>
             
-            <div className="relative md:hidden">
+            <div className="relative md:hidden z-[120]">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="w-[40px] h-[40px] px-1 transition-colors flex items-center justify-center ml-2"
+                className="w-[40px] h-[40px] px-1 transition-colors flex items-center justify-center ml-2 cursor-pointer relative z-[120]"
                 aria-label="Menu"
               >
                 <svg
@@ -95,9 +95,8 @@ const Header: React.FC = () => {
                 </svg>
               </button>
 
-              {/* Dropdown Menu - Mobile Only */}
               {isMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-bg-secondary rounded-lg shadow-lg border border-border-primary py-2 z-50">
+                <div className="absolute right-0 top-full mt-2 w-48 bg-bg-secondary rounded-lg shadow-lg border border-border-primary py-2 z-[120]">
                   {navItems.map((item) => (
                     <a
                       key={item}

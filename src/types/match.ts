@@ -16,6 +16,7 @@ export interface Match {
   };
   time?: string;
   date?: string;
+  fullDate?: string;
   homeTeamCards?: {
     yellow: number;
     red: number;
@@ -28,6 +29,35 @@ export interface Match {
     aggregate?: 'home' | 'away';
     penalty?: 'home' | 'away';
     redCard?: 'home' | 'away';
+  };
+  league?: string;
+  leagueBadge?: string;
+  season?: string;
+  sport?: string;
+  round?: number;
+  postponed?: boolean;
+  venue?: string;
+  city?: string;
+  country?: string;
+  spectators?: number;
+  official?: string;
+  homeFormation?: string;
+  awayFormation?: string;
+  homeShots?: number;
+  awayShots?: number;
+  homeLineup?: {
+    goalkeeper?: string[];
+    defense?: string[];
+    midfield?: string[];
+    forward?: string[];
+    substitutes?: string[];
+  };
+  awayLineup?: {
+    goalkeeper?: string[];
+    defense?: string[];
+    midfield?: string[];
+    forward?: string[];
+    substitutes?: string[];
   };
 }
 
