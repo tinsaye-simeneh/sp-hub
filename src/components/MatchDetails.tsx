@@ -7,6 +7,7 @@ import TabNavigation from './TabNavigation';
 import MatchDetailsTab from './MatchDetailsTab';
 import MatchLineupsTab from './MatchLineupsTab';
 import Loader from './Loader';
+import ErrorFallback from './ErrorFallback';
 import { useMatchDetails } from '../hooks/useMatchDetails';
 import { arrowLeft } from '../assets';
 
@@ -23,13 +24,8 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
 
   const { match: apiMatch, events: apiEvents, loading, error } = useMatchDetails(id);
 
-  // Only use fallback data if API hasn't loaded yet or if API failed
   const matchFromState = (location.state as { match?: Match })?.match;
   
-  // Prioritize API data - use fallback only if:
-  // 1. API is still loading AND we have state/props data (for immediate display)
-  // 2. API failed AND we have state/props data
-  // Otherwise wait for API or show null
   const matchData: Match | null = apiMatch || 
     (!loading && error && (match || matchFromState)) || 
     (loading && (match || matchFromState)) || 
@@ -37,7 +33,6 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
 
   const displayEvents = apiEvents.length > 0 ? apiEvents : [];
   
-  // Get league name from API match if available
   const displayLeagueName = apiMatch?.league || leagueName;
 
   return (
@@ -94,7 +89,7 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
               <MatchDetailsTab match={matchData} />
             )}
             {activeTab === 'Odds' && (
-              <div className="text-text-primary">
+              <div className="text-text-primary mx-auto text-center">
                 <p className="text-sm text-text-secondary">Odds will be displayed here</p>
               </div>
             )}
@@ -102,12 +97,12 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
               <MatchLineupsTab match={matchData} />
             )}
             {activeTab === 'Stats' && (
-              <div className="text-text-primary">
+              <div className="text-text-primary mx-auto text-center">
                 <p className="text-sm text-text-secondary">Statistics will be displayed here</p>
               </div>
             )}
             {activeTab === 'Standings' && (
-              <div className="text-text-primary">
+              <div className="text-text-primary mx-auto text-center">
                 <p className="text-sm text-text-secondary">Standings will be displayed here</p>
               </div>
             )}

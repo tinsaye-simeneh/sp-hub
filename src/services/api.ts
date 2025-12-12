@@ -1,6 +1,7 @@
 
 import { API_ENDPOINTS } from '../constants/api';
 import { Match, MatchEvent } from '../types/match';
+import { arsenal, liverpool } from '../assets';
 
 export interface SportsDBEvent {
   idEvent: string;
@@ -424,50 +425,100 @@ export async function fetchMatchDetails(eventId: string): Promise<{
   match: Match;
   events: MatchEvent[];
 }> {
-  try {
-    const url = API_ENDPOINTS.LOOKUP_EVENT(eventId);
-    const response = await fetchAPI<SportsDBResponse<SportsDBEventDetail>>(url);
-    
-    if (response.error) {
-      throw new Error(response.error);
-    }
-    
-    const event = response.event || response.events?.[0];
-    if (!event) {
-      throw new Error('Event not found');
-    }
-    
-    const match = convertToMatchDetail(event);
-    
-    let events: MatchEvent[] = [];
-    try {
-      events = convertToMatchEvents(event);
-    } catch (err) {
-      console.warn('Could not parse events from API:', err);
-    }
-    
-    if (events.length === 0) {
-      const { mockEvents } = await import('../data/mockEvents');
-      events = mockEvents;
-    }
-    
-    return { match, events };
-  } catch (error) {
-    console.error('Error fetching match details:', error);
-    try {
-      const { mockEvents } = await import('../data/mockEvents');
-      const mockMatch: Match = {
-        id: eventId,
-        status: 'ft',
-        statusText: 'FT',
-        homeTeam: { name: 'Team A', score: 0 },
-        awayTeam: { name: 'Team B', score: 0 },
-      };
-      return { match: mockMatch, events: mockEvents };
-    } catch (mockError) {
-      throw error;
-    }
+  const { mockEvents } = await import('../data/mockEvents');
+  const { mockMatches } = await import('../data/mockMatches');
+  
+  const arsenalLiverpoolMatch = mockMatches
+    .flatMap(league => league.matches)
+    .find(m => 
+      (m.homeTeam.name === 'Arsenal' && m.awayTeam.name === 'Liverpool') ||
+      (m.homeTeam.name === 'Liverpool' && m.awayTeam.name === 'Arsenal')
+    );
+  
+  if (arsenalLiverpoolMatch) {
+    const enhancedMatch: Match = {
+      ...arsenalLiverpoolMatch,
+      id: eventId,
+      league: 'English Premier League',
+      venue: 'Emirates Stadium',
+      city: 'London',
+      country: 'England',
+      date: '11 AUG',
+      time: '20:00',
+      homeFormation: '4-3-3',
+      awayFormation: '4-3-3',
+      homeTeam: {
+        ...arsenalLiverpoolMatch.homeTeam,
+        logo: arsenal,
+      },
+      awayTeam: {
+        ...arsenalLiverpoolMatch.awayTeam,
+        logo: liverpool,
+      },
+      homeLineup: {
+        goalkeeper: ['Raya'],
+        defense: ['White', 'Saliba', 'Gabriel', 'Zinchenko'],
+        midfield: ['Rice', 'Odegaard', 'Havertz'],
+        forward: ['Saka', 'Jesus', 'Martinelli'],
+        substitutes: ['Trossard', 'Jorginho', 'Nketiah', 'Tomiyasu', 'Smith Rowe'],
+      },
+      awayLineup: {
+        goalkeeper: ['Alisson'],
+        defense: ['Alexander-Arnold', 'Konate', 'Van Dijk', 'Robertson'],
+        midfield: ['Szoboszlai', 'Mac Allister', 'Jones'],
+        forward: ['Salah', 'Nunez', 'Diaz'],
+        substitutes: ['Gakpo', 'Elliott', 'Gomez', 'Endo', 'Gravenberch'],
+      },
+    };
+    return { match: enhancedMatch, events: mockEvents };
   }
+  
+  const mockMatch: Match = {
+    id: eventId,
+    status: 'ft',
+    statusText: 'FT',
+    homeTeam: { 
+      name: 'Arsenal', 
+      score: 2,
+      logo: arsenal,
+    },
+    awayTeam: { 
+      name: 'Liverpool', 
+      score: 1,
+      logo: liverpool,
+    },
+    league: 'English Premier League',
+    venue: 'Emirates Stadium',
+    city: 'London',
+    country: 'England',
+    date: '11 AUG',
+    time: '20:00',
+    homeFormation: '4-3-3',
+    awayFormation: '4-3-3',
+    homeTeamCards: {
+      yellow: 2,
+      red: 0,
+    },
+    awayTeamCards: {
+      yellow: 1,
+      red: 1,
+    },
+    homeLineup: {
+      goalkeeper: ['Raya'],
+      defense: ['White', 'Saliba', 'Gabriel', 'Zinchenko'],
+      midfield: ['Rice', 'Odegaard', 'Havertz'],
+      forward: ['Saka', 'Jesus', 'Martinelli'],
+      substitutes: ['Trossard', 'Jorginho', 'Nketiah', 'Tomiyasu', 'Smith Rowe'],
+    },
+    awayLineup: {
+      goalkeeper: ['Alisson'],
+      defense: ['Alexander-Arnold', 'Konate', 'Van Dijk', 'Robertson'],
+      midfield: ['Szoboszlai', 'Mac Allister', 'Jones'],
+      forward: ['Salah', 'Nunez', 'Diaz'],
+      substitutes: ['Gakpo', 'Elliott', 'Gomez', 'Endo', 'Gravenberch'],
+    },
+  };
+  return { match: mockMatch, events: mockEvents };
 }
 
 export async function fetchEventsByDate(

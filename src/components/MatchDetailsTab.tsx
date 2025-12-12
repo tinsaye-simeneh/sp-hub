@@ -7,8 +7,8 @@ interface MatchDetailsTabProps {
 
 const MatchDetailsTab: React.FC<MatchDetailsTabProps> = ({ match }) => {
   return (
-    <div className="space-y-6">
-      <div className="bg-bg-secondary rounded-lg p-4">
+    <div className="space-y-6 w-[707px] mx-auto">
+      <div className="bg-[#1D1E2B] rounded-lg p-4">
         <h3 className="text-text-primary text-lg font-semibold mb-4">Match Information</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {match.league && (

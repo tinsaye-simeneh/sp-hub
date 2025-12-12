@@ -3,6 +3,7 @@ import LeagueSection from './LeagueSection';
 import DateSelector from './DateSelector';
 import FilterButtons from './FilterButtons';
 import Loader from './Loader';
+import ErrorFallback from './ErrorFallback';
 import { useMatches } from '../hooks/useMatches';
 import { useLiveMatches } from '../hooks/useLiveMatches';
 import { useFavorites } from '../hooks/useFavorites';
@@ -177,10 +178,21 @@ const MatchesDashboard: React.FC = () => {
           </div>
         )}
 
-        {error && (
-          <div className="flex items-center justify-center py-12">
-            <div className="text-status-error">Error: {error}</div>
-          </div>
+        {error && !loading && (
+          <ErrorFallback
+            error={error}
+            onRetry={() => {
+              if (activeFilter === 'live') {
+                // Retry logic for live matches
+                window.location.reload();
+              } else {
+                // Retry logic for all matches
+                window.location.reload();
+              }
+            }}
+            title="Failed to load matches"
+            message="We couldn't fetch the matches. Please check your connection and try again."
+          />
         )}
 
         {!loading && !error && (

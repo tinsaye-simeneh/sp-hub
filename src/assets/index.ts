@@ -10,6 +10,8 @@ import chevronRight from '../../public/chevron-right.png';
 import live from '../../public/live.png';
 import arrowLeft from '../../public/arrow-left.png';
 import heart from '../../public/heart.png';
+import arsenal from '../../public/arsenal.png';
+import liverpool from '../../public/liverpool.png';
 
 export const assets = {
   logo,
@@ -23,6 +25,8 @@ export const assets = {
   live,
   arrowLeft,
   heart,
+  arsenal,
+  liverpool,
 };
   
 export {
@@ -37,5 +41,7 @@ export {
   live,
   arrowLeft,
   heart,
+  arsenal,
+  liverpool,
 };
 
