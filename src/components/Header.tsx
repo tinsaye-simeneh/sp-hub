@@ -68,7 +68,7 @@ const Header: React.FC = () => {
             <div className="relative md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="w-[40px] h-[40px] px-1 transition-colors flex items-center justify-center ml-2"
+                className="w-[40px] h-[40px] px-1 transition-colors flex items-center justify-center ml-2 cursor-pointer"
                 aria-label="Menu"
               >
                 <svg
