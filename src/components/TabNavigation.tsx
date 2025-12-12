@@ -18,13 +18,13 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabChange })
   ];
 
   return (
-    <div className="border-b border-border-primary px-4">
+    <div className="border-b border-border-primary xl:px-4 px-0">
       <div className="flex items-center justify-center gap-1 overflow-x-auto scrollbar-hide">
         {tabs.map((tab) => (
           <button
             key={tab}
             onClick={() => onTabChange(tab)}
-            className={`px-4 py-3 text-sm font-medium transition-colors whitespace-nowrap relative cursor-pointer ${
+            className={`xl:px-4 px-2 py-3 text-sm font-medium transition-colors whitespace-nowrap relative cursor-pointer ${
               activeTab === tab
                 ? 'text-brand-secondary'
                 : 'text-text-secondary hover:text-text-primary'

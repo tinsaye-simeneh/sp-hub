@@ -8,8 +8,8 @@ const Header: React.FC = () => {
 
   return (
     <header className="bg-brand-primary border-b border-border-primary w-full fixed top-0 left-0 right-0 z-[100]">
-      <div className="max-w-[1440px] mx-auto px-4 py-1 w-full">
-        <div className="flex items-center justify-between">
+      <div className="max-w-[1440px] lg:h-[70px] h-[66px] mx-auto px-4 w-full flex items-center">
+        <div className="flex items-center justify-between w-full">
           <div>
             <img src={logo} alt="logo" className="w-[120px] md:w-[200px] h-auto md:h-[60px]" />
           </div>

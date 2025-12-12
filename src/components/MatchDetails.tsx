@@ -36,9 +36,9 @@ const MatchDetails: React.FC<MatchDetailsProps> = ({ match, leagueName = 'Englis
   const displayLeagueName = apiMatch?.league || leagueName;
 
   return (
-    <div className="bg-[#181921] min-h-screen w-full overflow-x-hidden pt-[60px]">
-      <div className="w-full max-w-[820px] mx-auto px-4 xl:pt-10 overflow-x-hidden">
-      <div className="w-full max-w-[707px] bg-[#1D1E2B] rounded-t-lg mx-auto overflow-x-hidden">
+    <div className="bg-[#181921] min-h-screen w-full overflow-x-hidden pt-[70px]">
+      <div className="w-full max-w-[820px] mx-auto xl:px-4 xl:pt-10 overflow-x-hidden">
+      <div className="w-full max-w-[707px] bg-[#1D1E2B] xl:rounded-t-lg mx-auto overflow-x-hidden">
         <div className="flex items-center gap-4 px-4 py-4 border-b border-border-primary">
           <button
             onClick={() => navigate(-1)}
