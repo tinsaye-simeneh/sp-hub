@@ -50,7 +50,6 @@ const MatchesDashboard: React.FC = () => {
           });
         }
         
-        console.log(`Fetched ${result.data.length} Premier League matches, showing ${filteredMatches.length} after date filter`);
         setPremierLeagueMatches(filteredMatches);
       } catch (error) {
         console.error('Error fetching Premier League matches:', error);
@@ -142,15 +141,7 @@ const MatchesDashboard: React.FC = () => {
       league: premierLeagueMatches[0]?.league || PREMIER_LEAGUE_NAME,
       matches: premierLeagueMatches,
       badge: premierLeagueMatches[0]?.leagueBadge,
-    }] : [];
-    
-    console.log('Grouped matches:', {
-      premierLeagueCount: premierLeagueMatches.length,
-      premierLeagueSection: premierLeagueSection.length,
-      otherLeaguesCount: otherLeagues.length,
-      activeFilter
-    });
-    
+    }] : [];  
     return [...premierLeagueSection, ...otherLeagues];
   }, [displayMatches, premierLeagueMatches, activeFilter]);
 

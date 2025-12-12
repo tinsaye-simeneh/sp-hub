@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { calendar, chevronLeft, chevronRight } from '../assets';
 
 interface DateSelectorProps {
@@ -118,13 +119,13 @@ const DateSelector: React.FC<DateSelectorProps> = ({ onDateChange: _onDateChange
             </div>
           </div>
 
-          <div className="relative z-[110]">
+          <div className="relative z-10">
             <button
               ref={buttonRef}
               onClick={() => setIsPickerOpen(!isPickerOpen)}
               title="Open Calendar"
               aria-label="Open Calendar"
-              className="w-11 h-11 rounded-full bg-bg-secondary flex items-center justify-center flex-shrink-0 cursor-pointer"
+              className="w-11 h-11 rounded-full bg-bg-secondary flex items-center justify-center flex-shrink-0 cursor-pointer relative z-10"
             >
               <svg className="w-6 h-6 text-brand-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3M6 11h12M6 21h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -132,10 +133,10 @@ const DateSelector: React.FC<DateSelectorProps> = ({ onDateChange: _onDateChange
               </svg>
             </button>
 
-            {isPickerOpen && (
+            {isPickerOpen && createPortal(
               <div
                 ref={pickerRef}
-                className="fixed md:absolute right-4 md:right-0 md:top-full md:mt-2 bg-[#1D1E2B] rounded-lg shadow-lg p-4 z-[110] min-w-[280px]"
+                className="fixed bg-[#1D1E2B] border border-white rounded-lg shadow-lg p-4 z-[115] min-w-[280px]"
                 style={{
                   top: `${pickerPosition.top}px`,
                   right: `${pickerPosition.right}px`,
@@ -174,7 +175,8 @@ const DateSelector: React.FC<DateSelectorProps> = ({ onDateChange: _onDateChange
                     </button>
                   ))}
                 </div>
-              </div>
+              </div>,
+              document.body
             )}
           </div>
         </div>

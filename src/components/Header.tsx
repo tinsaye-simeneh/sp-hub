@@ -65,10 +65,10 @@ const Header: React.FC = () => {
               <img src={eg} alt="flag" className="w-[24px] h-[24px]" />
             </button>
             
-            <div className="relative md:hidden">
+            <div className="relative md:hidden z-[120]">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="w-[40px] h-[40px] px-1 transition-colors flex items-center justify-center ml-2 cursor-pointer"
+                className="w-[40px] h-[40px] px-1 transition-colors flex items-center justify-center ml-2 cursor-pointer relative z-[120]"
                 aria-label="Menu"
               >
                 <svg
@@ -96,7 +96,7 @@ const Header: React.FC = () => {
               </button>
 
               {isMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-bg-secondary rounded-lg shadow-lg border border-border-primary py-2 z-[110]">
+                <div className="absolute right-0 top-full mt-2 w-48 bg-bg-secondary rounded-lg shadow-lg border border-border-primary py-2 z-[120]">
                   {navItems.map((item) => (
                     <a
                       key={item}
