@@ -49,17 +49,23 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({
         <img 
           src={live} 
           alt="live" 
-          className={`w-[20px] h-[20px] ${
-            activeFilter === 'live' ? 'brightness-0' : ''
+          className={`w-[20px] h-[20px] transition-all ${
+            activeFilter === 'live' 
+              ? 'brightness-0' 
+              : 'group-hover:brightness-0 group-hover:invert group-hover:sepia group-hover:saturate-[10] group-hover:hue-rotate-[90deg]'
           }`}
         />
         <span className={`text-[14px] font-medium transition-colors ${
           activeFilter === 'live' 
             ? 'text-black' 
-            : 'text-text-primary group-hover:text-yellow-400'
+            : 'text-text-primary group-hover:text-green-400'
         }`}>Live</span>
         <span className="px-1 py-0.5 min-w-[16px] rounded-full text-[12px] bg-bg-primary flex items-center justify-center">
-          <span className="text-[12px] font-medium text-white">{liveCount}</span>
+          <span className={`text-[12px] font-medium transition-colors ${
+            activeFilter === 'live'
+              ? 'text-white'
+              : 'text-white group-hover:text-green-400'
+          }`}>{liveCount}</span>
         </span>
       </button>
 
@@ -78,17 +84,21 @@ const FilterButtons: React.FC<FilterButtonsProps> = ({
         <svg className={`w-[20px] h-[20px] transition-colors ${
           activeFilter === 'favorites'
             ? 'text-black'
-            : 'text-text-primary group-hover:text-yellow-400'
+            : 'text-text-primary group-hover:text-green-400'
         }`} fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
         </svg>
         <span className={`text-[14px] font-medium transition-colors ${
           activeFilter === 'favorites'
             ? 'text-black'
-            : 'text-text-primary group-hover:text-yellow-400'
+            : 'text-text-primary group-hover:text-green-400'
         }`}>Favorites</span>
         <span className="px-1 min-w-[16px] h-[16px] text-[12px] rounded-full bg-bg-primary flex items-center justify-center">
-          <span className="text-[12px] font-medium text-white">{favoritesCount}</span>
+          <span className={`text-[12px] font-medium transition-colors ${
+            activeFilter === 'favorites'
+              ? 'text-white'
+              : 'text-white group-hover:text-green-400'
+          }`}>{favoritesCount}</span>
         </span>
       </button>
     </div>
