@@ -1,50 +1,41 @@
-/**
- * Theme configuration and utilities
- * Centralized theme settings for The Sports Hub
- */
-
+  
 import { colors } from './colors';
 
 export const theme = {
   colors,
   
-  // Spacing scale (can be extended)
   spacing: {
-    xs: '0.25rem',   // 4px
-    sm: '0.5rem',    // 8px
-    md: '1rem',      // 16px
-    lg: '1.5rem',    // 24px
-    xl: '2rem',      // 32px
-    '2xl': '3rem',   // 48px
+    xs: '0.25rem',   
+    sm: '0.5rem',    
+    md: '1rem',      
+    lg: '1.5rem',    
+    xl: '2rem',      
+    '2xl': '3rem',   
   },
 
-  // Border radius
   borderRadius: {
-    sm: '0.25rem',   // 4px
-    md: '0.5rem',    // 8px
-    lg: '0.75rem',   // 12px
-    xl: '1rem',      // 16px
+    sm: '0.25rem',   
+    md: '0.5rem',    
+    lg: '0.75rem',   
+    xl: '1rem',      
     full: '9999px',
   },
-
-  // Typography
   typography: {
     fontFamily: {
       sans: ['Inter', 'system-ui', 'sans-serif'],
     },
     fontSize: {
-      xs: '0.75rem',    // 12px
-      sm: '0.875rem',   // 14px
-      base: '1rem',     // 16px
-      lg: '1.125rem',   // 18px
-      xl: '1.25rem',    // 20px
-      '2xl': '1.5rem',  // 24px
-      '3xl': '1.875rem', // 30px
-      '4xl': '2.25rem',  // 36px
+      xs: '0.75rem',    
+      sm: '0.875rem',   
+      base: '1rem',     
+      lg: '1.125rem',   
+      xl: '1.25rem',    
+      '2xl': '1.5rem',  
+      '3xl': '1.875rem', 
+      '4xl': '2.25rem',  
     },
   },
 
-  // Shadows
   shadows: {
     sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
     md: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',

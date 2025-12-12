@@ -1,6 +1,3 @@
-/**
- * Centralized exports for hooks
- */
 
 export { useMatches } from './useMatches';
 export { useMatchDetails } from './useMatchDetails';

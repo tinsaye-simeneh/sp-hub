@@ -7,7 +7,7 @@ const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="bg-brand-primary border-b border-border-primary w-full top-0 sticky z-50 overflow-x-hidden top-0 sticky z-50">
+    <header className="bg-brand-primary border-b border-border-primary w-full fixed top-0 left-0 right-0 z-[100]">
       <div className="max-w-[1440px] mx-auto px-4 py-1 w-full">
         <div className="flex items-center justify-between">
           <div>
@@ -95,9 +95,8 @@ const Header: React.FC = () => {
                 </svg>
               </button>
 
-              {/* Dropdown Menu - Mobile Only */}
               {isMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-bg-secondary rounded-lg shadow-lg border border-border-primary py-2 z-50">
+                <div className="absolute right-0 top-full mt-2 w-48 bg-bg-secondary rounded-lg shadow-lg border border-border-primary py-2 z-[110]">
                   {navItems.map((item) => (
                     <a
                       key={item}

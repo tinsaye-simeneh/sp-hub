@@ -1,7 +1,3 @@
-/**
- * Color utility classes for Tailwind CSS
- * Using arbitrary values to ensure colors work correctly
- */
 
 export const colorClasses = {
   bg: {

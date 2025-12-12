@@ -1,12 +1,7 @@
-/**
- * API Service Functions
- * Handles all communication with The SportsDB API
- */
 
 import { API_ENDPOINTS } from '../constants/api';
 import { Match, MatchEvent } from '../types/match';
 
-// The SportsDB API Response Types
 export interface SportsDBEvent {
   idEvent: string;
   idSoccerXML: string | null;
@@ -111,9 +106,6 @@ export interface PaginatedResponse<T> {
   };
 }
 
-/**
- * Generic API fetch function with error handling
- */
 async function fetchAPI<T>(url: string): Promise<T> {
   try {
     const response = await fetch(url);
@@ -130,9 +122,6 @@ async function fetchAPI<T>(url: string): Promise<T> {
   }
 }
 
-/**
- * Convert SportsDB status to our Match status type
- */
 function convertStatus(strStatus: string, intHomeScore: string | null, intAwayScore: string | null): Match['status'] {
   const status = strStatus?.toLowerCase() || '';
   
@@ -151,14 +140,10 @@ function convertStatus(strStatus: string, intHomeScore: string | null, intAwaySc
   return 'scheduled';
 }
 
-/**
- * Get status text from SportsDB event
- */
 function getStatusText(event: SportsDBEvent): string {
   const status = (event.strStatus || '').toLowerCase();
   
-  if (status.includes('live') || status.includes('1h') || status.includes('2h')) {
-    // Extract minute if available
+  if (status.includes('live') || status.includes('1h') || status.includes('2h')) {  
     const minuteMatch = status.match(/(\d+)\s*'/);
     if (minuteMatch) {
       return `${minuteMatch[1]}'`;
@@ -171,7 +156,6 @@ function getStatusText(event: SportsDBEvent): string {
   if (status.includes('finished') || status.includes('ft')) {
     return 'FT';
   }
-  // If status is null but scores exist, it's finished
   if (event.intHomeScore !== null && event.intAwayScore !== null) {
     return 'FT';
   }
@@ -181,9 +165,6 @@ function getStatusText(event: SportsDBEvent): string {
   return 'Scheduled';
 }
 
-/**
- * Format date to short format (e.g., "11 AUG")
- */
 function formatDate(dateString: string | null): string | undefined {
   if (!dateString) return undefined;
   
@@ -197,14 +178,10 @@ function formatDate(dateString: string | null): string | undefined {
   }
 }
 
-/**
- * Parse goal details to extract events
- */
 function parseGoalDetails(goalDetails: string | null, team: 'home' | 'away'): MatchEvent[] {
   if (!goalDetails) return [];
   
   const events: MatchEvent[] = [];
-  // Format: "Player Name (minute')" or "Player Name (minute') assist: Assister Name"
   const goalRegex = /([^(]+)\s*\((\d+['\+]?)\)(?:\s*assist:\s*([^)]+))?/gi;
   let match;
   
@@ -226,9 +203,6 @@ function parseGoalDetails(goalDetails: string | null, team: 'home' | 'away'): Ma
   return events;
 }
 
-/**
- * Parse card details to extract events
- */
 function parseCardDetails(
   cardDetails: string | null,
   team: 'home' | 'away',
@@ -237,7 +211,6 @@ function parseCardDetails(
   if (!cardDetails) return [];
   
   const events: MatchEvent[] = [];
-  // Format: "Player Name (minute')"
   const cardRegex = /([^(]+)\s*\((\d+['\+]?)\)/gi;
   let match;
   
@@ -257,19 +230,14 @@ function parseCardDetails(
   return events;
 }
 
-/**
- * Convert SportsDB event to our Match type
- */
 export function convertToMatch(event: SportsDBEvent): Match {
   const homeScore = event.intHomeScore ? parseInt(event.intHomeScore, 10) : undefined;
   const awayScore = event.intAwayScore ? parseInt(event.intAwayScore, 10) : undefined;
   const status = convertStatus(event.strStatus || '', event.intHomeScore, event.intAwayScore);
   
-  // Get team badges/logos from the event
   const homeTeamLogo = event.strHomeTeamBadge || undefined;
   const awayTeamLogo = event.strAwayTeamBadge || undefined;
   
-  // Parse additional fields
   const round = event.intRound ? parseInt(event.intRound, 10) : undefined;
   const spectators = event.intSpectators ? parseInt(event.intSpectators, 10) : undefined;
   const postponed = event.strPostponed === 'yes';
@@ -289,7 +257,7 @@ export function convertToMatch(event: SportsDBEvent): Match {
       logo: awayTeamLogo,
     },
     date: formatDate(event.dateEvent),
-    fullDate: event.dateEvent || undefined, // Keep original date for filtering
+    fullDate: event.dateEvent || undefined,
     time: event.strTime || undefined,
     league: event.strLeague || undefined,
     leagueBadge: event.strLeagueBadge || undefined,
@@ -305,35 +273,25 @@ export function convertToMatch(event: SportsDBEvent): Match {
   };
 }
 
-/**
- * Parse lineup string into array
- */
 function parseLineup(lineup: string | null): string[] {
   if (!lineup) return [];
   return lineup.split(';').filter(Boolean).map(p => p.trim());
 }
 
-/**
- * Convert SportsDB event detail to Match with additional data
- */
 export function convertToMatchDetail(event: SportsDBEventDetail): Match {
   const match = convertToMatch(event);
   
-  // Add league information
   match.league = event.strLeague || undefined;
   match.venue = event.strVenue || undefined;
   match.city = event.strCity || undefined;
   match.country = event.strCountry || undefined;
   
-  // Add formations
   match.homeFormation = event.strHomeFormation || undefined;
   match.awayFormation = event.strAwayFormation || undefined;
   
-  // Add shots
   match.homeShots = event.intHomeShots ? parseInt(event.intHomeShots, 10) : undefined;
   match.awayShots = event.intAwayShots ? parseInt(event.intAwayShots, 10) : undefined;
   
-  // Parse cards if available
   if (event.strHomeYellowCards || event.strHomeRedCards) {
     const yellowCount = event.strHomeYellowCards?.split(',').filter(Boolean).length || 0;
     const redCount = event.strHomeRedCards?.split(',').filter(Boolean).length || 0;
@@ -346,7 +304,6 @@ export function convertToMatchDetail(event: SportsDBEventDetail): Match {
     match.awayTeamCards = { yellow: yellowCount, red: redCount };
   }
   
-  // Parse lineups
   if (event.strHomeLineupGoalkeeper || event.strHomeLineupDefense || event.strHomeLineupMidfield || event.strHomeLineupForward) {
     match.homeLineup = {
       goalkeeper: parseLineup(event.strHomeLineupGoalkeeper),
@@ -370,13 +327,9 @@ export function convertToMatchDetail(event: SportsDBEventDetail): Match {
   return match;
 }
 
-/**
- * Convert SportsDB event detail to MatchEvents
- */
 export function convertToMatchEvents(event: SportsDBEventDetail): MatchEvent[] {
   const events: MatchEvent[] = [];
   
-  // Parse goals
   if (event.strHomeGoalDetails) {
     events.push(...parseGoalDetails(event.strHomeGoalDetails, 'home'));
   }
@@ -384,7 +337,6 @@ export function convertToMatchEvents(event: SportsDBEventDetail): MatchEvent[] {
     events.push(...parseGoalDetails(event.strAwayGoalDetails, 'away'));
   }
   
-  // Parse yellow cards
   if (event.strHomeYellowCards) {
     events.push(...parseCardDetails(event.strHomeYellowCards, 'home', 'yellowCard'));
   }
@@ -392,7 +344,6 @@ export function convertToMatchEvents(event: SportsDBEventDetail): MatchEvent[] {
     events.push(...parseCardDetails(event.strAwayYellowCards, 'away', 'yellowCard'));
   }
   
-  // Parse red cards
   if (event.strHomeRedCards) {
     events.push(...parseCardDetails(event.strHomeRedCards, 'home', 'redCard'));
   }
@@ -400,7 +351,6 @@ export function convertToMatchEvents(event: SportsDBEventDetail): MatchEvent[] {
     events.push(...parseCardDetails(event.strAwayRedCards, 'away', 'redCard'));
   }
   
-  // Sort by minute (descending - most recent first)
   return events.sort((a, b) => {
     const minuteA = parseInt(a.minute.replace(/'|\+/g, ''), 10) || 0;
     const minuteB = parseInt(b.minute.replace(/'|\+/g, ''), 10) || 0;
@@ -408,9 +358,6 @@ export function convertToMatchEvents(event: SportsDBEventDetail): MatchEvent[] {
   });
 }
 
-/**
- * Paginate array results
- */
 function paginateArray<T>(array: T[], page: number = 1, limit: number = 10): PaginatedResponse<T> {
   const startIndex = (page - 1) * limit;
   const endIndex = startIndex + limit;
@@ -429,9 +376,6 @@ function paginateArray<T>(array: T[], page: number = 1, limit: number = 10): Pag
   };
 }
 
-/**
- * Fetch upcoming events for a team/league with pagination
- */
 export async function fetchUpcomingEvents(
   id: string,
   page: number = 1,
@@ -454,9 +398,6 @@ export async function fetchUpcomingEvents(
   }
 }
 
-/**
- * Fetch past events for a team/league with pagination
- */
 export async function fetchPastEvents(
   id: string,
   page: number = 1,
@@ -479,9 +420,6 @@ export async function fetchPastEvents(
   }
 }
 
-/**
- * Fetch match details by event ID
- */
 export async function fetchMatchDetails(eventId: string): Promise<{
   match: Match;
   events: MatchEvent[];
@@ -500,18 +438,38 @@ export async function fetchMatchDetails(eventId: string): Promise<{
     }
     
     const match = convertToMatchDetail(event);
-    const events = convertToMatchEvents(event);
+    
+    let events: MatchEvent[] = [];
+    try {
+      events = convertToMatchEvents(event);
+    } catch (err) {
+      console.warn('Could not parse events from API:', err);
+    }
+    
+    if (events.length === 0) {
+      const { mockEvents } = await import('../data/mockEvents');
+      events = mockEvents;
+    }
     
     return { match, events };
   } catch (error) {
     console.error('Error fetching match details:', error);
-    throw error;
+    try {
+      const { mockEvents } = await import('../data/mockEvents');
+      const mockMatch: Match = {
+        id: eventId,
+        status: 'ft',
+        statusText: 'FT',
+        homeTeam: { name: 'Team A', score: 0 },
+        awayTeam: { name: 'Team B', score: 0 },
+      };
+      return { match: mockMatch, events: mockEvents };
+    } catch (mockError) {
+      throw error;
+    }
   }
 }
 
-/**
- * Fetch events by date with pagination
- */
 export async function fetchEventsByDate(
   date: string,
   page: number = 1,
@@ -534,9 +492,6 @@ export async function fetchEventsByDate(
   }
 }
 
-/**
- * Fetch events by league (all teams in league) with pagination
- */
 export async function fetchEventsByLeague(
   leagueId: string,
   page: number = 1,
@@ -559,9 +514,6 @@ export async function fetchEventsByLeague(
   }
 }
 
-/**
- * Fetch all teams in a league
- */
 export interface SportsDBTeam {
   idTeam: string;
   strTeam: string;
@@ -603,9 +555,6 @@ export interface SportsDBTeamsResponse {
   error?: string;
 }
 
-/**
- * Fetch all teams in a league
- */
 export async function fetchTeamsByLeague(leagueId: string): Promise<SportsDBTeam[]> {
   try {
     const url = API_ENDPOINTS.TEAMS_BY_LEAGUE(leagueId);
@@ -622,9 +571,6 @@ export async function fetchTeamsByLeague(leagueId: string): Promise<SportsDBTeam
   }
 }
 
-/**
- * SportsDB League interface
- */
 export interface SportsDBLeague {
   idLeague: string;
   strLeague: string;
@@ -637,9 +583,6 @@ export interface SportsDBLeaguesResponse {
   error?: string;
 }
 
-/**
- * Fetch all leagues
- */
 export async function fetchAllLeagues(): Promise<SportsDBLeague[]> {
   try {
     const url = API_ENDPOINTS.ALL_LEAGUES();

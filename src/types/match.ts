@@ -16,7 +16,7 @@ export interface Match {
   };
   time?: string;
   date?: string;
-  fullDate?: string; // Original date in YYYY-MM-DD format for filtering
+  fullDate?: string;
   homeTeamCards?: {
     yellow: number;
     red: number;
@@ -30,7 +30,6 @@ export interface Match {
     penalty?: 'home' | 'away';
     redCard?: 'home' | 'away';
   };
-  // Additional details from API
   league?: string;
   leagueBadge?: string;
   season?: string;

@@ -1,7 +1,4 @@
-/**
- * Custom hook for managing favorite matches
- */
-
+  
 import { useState, useEffect } from 'react';
 import { Match } from '../types/match';
 
@@ -10,7 +7,6 @@ const FAVORITES_STORAGE_KEY = 'sports-hub-favorites';
 export function useFavorites() {
   const [favoriteIds, setFavoriteIds] = useState<Set<string>>(new Set());
 
-  // Load favorites from localStorage on mount
   useEffect(() => {
     try {
       const stored = localStorage.getItem(FAVORITES_STORAGE_KEY);
@@ -23,7 +19,6 @@ export function useFavorites() {
     }
   }, []);
 
-  // Save favorites to localStorage whenever they change
   useEffect(() => {
     try {
       localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(Array.from(favoriteIds)));

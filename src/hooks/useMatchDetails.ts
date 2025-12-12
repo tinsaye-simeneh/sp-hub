@@ -1,6 +1,3 @@
-/**
- * Custom hook for fetching match details
- */
 
 import { useState, useEffect } from 'react';
 import { fetchMatchDetails } from '../services/api';

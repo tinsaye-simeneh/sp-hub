@@ -8,7 +8,6 @@ interface MatchDetailsTabProps {
 const MatchDetailsTab: React.FC<MatchDetailsTabProps> = ({ match }) => {
   return (
     <div className="space-y-6">
-      {/* Match Information */}
       <div className="bg-bg-secondary rounded-lg p-4">
         <h3 className="text-text-primary text-lg font-semibold mb-4">Match Information</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -99,7 +98,6 @@ const MatchDetailsTab: React.FC<MatchDetailsTabProps> = ({ match }) => {
         </div>
       </div>
 
-      {/* Statistics */}
       {(match.homeShots !== undefined || match.awayShots !== undefined) && (
         <div className="bg-bg-secondary rounded-lg p-4">
           <h3 className="text-text-primary text-lg font-semibold mb-4">Statistics</h3>
@@ -124,7 +122,6 @@ const MatchDetailsTab: React.FC<MatchDetailsTabProps> = ({ match }) => {
         </div>
       )}
 
-      {/* Formations */}
       {(match.homeFormation || match.awayFormation) && (
         <div className="bg-bg-secondary rounded-lg p-4">
           <h3 className="text-text-primary text-lg font-semibold mb-4">Formations</h3>

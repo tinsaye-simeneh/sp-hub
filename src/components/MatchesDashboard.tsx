@@ -157,7 +157,7 @@ const MatchesDashboard: React.FC = () => {
   const error = activeFilter === 'live' ? liveError : allError;
 
   return (
-    <div className="bg-[#181921] min-h-screen w-full overflow-x-hidden">
+    <div className="bg-[#181921] min-h-screen w-full overflow-x-hidden pt-[60px]">
       <div className="w-full max-w-[820px] mx-auto px-4 py-6">
         <h1 className="text-xl md:text-2xl font-bold text-text-primary mb-6">Matches</h1>
 

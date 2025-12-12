@@ -1,6 +1,3 @@
-/**
- * Custom hook for fetching live matches with polling and pagination
- */
 
 import { useState, useEffect, useRef } from 'react';
 import { fetchEventsByDate, PaginatedResponse } from '../services/api';
@@ -43,22 +40,17 @@ export function useLiveMatches(options: UseLiveMatchesOptions = {}): UseLiveMatc
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const fetchMatches = async () => {
     try {
-      setError(null);
-      // Fetch today's matches from all leagues with a large limit to get all matches
-      const today = new Date().toISOString().split('T')[0];
-      // Use a large limit to get all matches, then filter and paginate client-side
+        const today = new Date().toISOString().split('T')[0];
       const result: PaginatedResponse<Match> = await fetchEventsByDate(today, 1, 1000);
       
-      // Filter for live matches only (live or half-time)
       const liveMatches = result.data.filter(
         (match) => match.status === 'live' || match.status === 'ht'
       );
       
-      // Apply client-side pagination to live matches
       const startIndex = (page - 1) * limit;
       const endIndex = startIndex + limit;
       const paginatedLiveMatches = liveMatches.slice(startIndex, endIndex);
@@ -86,15 +78,12 @@ export function useLiveMatches(options: UseLiveMatchesOptions = {}): UseLiveMatc
       return;
     }
 
-    // Initial fetch
     fetchMatches();
 
-    // Set up polling
     intervalRef.current = setInterval(() => {
       fetchMatches();
     }, LIVE_POLLING_INTERVAL);
 
-    // Cleanup on unmount
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);

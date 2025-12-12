@@ -14,16 +14,13 @@ const MATCHES_PER_PAGE = 5;
 const LeagueSection: React.FC<LeagueSectionProps> = ({ leagueName, matches, leagueBadge }) => {
   const [currentPage, setCurrentPage] = useState(1);
   
-  // Get league badge from first match if not provided
   const badge = leagueBadge || matches[0]?.leagueBadge;
   
-  // Get sport, season, and round from first match
   const firstMatch = matches[0];
   const sport = firstMatch?.sport;
   const season = firstMatch?.season;
   const round = firstMatch?.round;
 
-  // Calculate pagination
   const totalPages = Math.ceil(matches.length / MATCHES_PER_PAGE);
   const startIndex = (currentPage - 1) * MATCHES_PER_PAGE;
   const endIndex = startIndex + MATCHES_PER_PAGE;
@@ -31,7 +28,6 @@ const LeagueSection: React.FC<LeagueSectionProps> = ({ leagueName, matches, leag
     return matches.slice(startIndex, endIndex);
   }, [matches, startIndex, endIndex]);
 
-  // Reset to page 1 when matches change
   React.useEffect(() => {
     setCurrentPage(1);
   }, [matches.length]);
@@ -56,7 +52,6 @@ const LeagueSection: React.FC<LeagueSectionProps> = ({ leagueName, matches, leag
               alt={leagueName} 
               className="w-5 h-5 object-contain flex-shrink-0"
               onError={(e) => {
-                // Hide image if it fails to load
                 (e.target as HTMLImageElement).style.display = 'none';
               }}
             />

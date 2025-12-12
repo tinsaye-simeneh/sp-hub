@@ -1,6 +1,3 @@
-/**
- * Custom hook for fetching matches with pagination
- */
 
 import { useState, useEffect } from 'react';
 import { fetchEventsByDate, PaginatedResponse } from '../services/api';
@@ -52,7 +49,6 @@ export function useMatches(options: UseMatchesOptions = {}): UseMatchesReturn {
       // Use today's date if no date is provided
       const targetDate = date || new Date().toISOString().split('T')[0];
       
-      // Fetch matches for the specified date (gets all leagues)
       const result: PaginatedResponse<Match> = await fetchEventsByDate(targetDate, page, limit);
 
       setMatches(result.data);

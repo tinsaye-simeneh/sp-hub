@@ -28,7 +28,7 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
       case 'ht':
         return 'text-status-live';
       case 'ft':
-        return 'text-red-500/70'; // Red with 70% opacity
+        return 'text-red-500/70';
       case 'scheduled':
         return 'text-text-tertiary';
       default:
@@ -36,10 +36,8 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
     }
   };
 
-  // Format time to show only hour and minute (HH:mm)
   const formatTime = (time?: string): string => {
     if (!time) return '';
-    // Handle formats like "22:00:00", "22:00", "8:00"
     const timeMatch = time.match(/(\d{1,2}):(\d{2})/);
     if (timeMatch) {
       const hours = timeMatch[1];
@@ -49,23 +47,19 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
     return time;
   };
 
-  // Get first letter of team name
   const getFirstLetter = (name: string): string => {
     if (!name) return '';
     return name.trim().charAt(0).toUpperCase();
   };
 
-  // Generate a consistent color for a team based on their name
   const getTeamColor = (name: string): string => {
     if (!name) return 'bg-bg-tertiary';
     
-    // Generate a hash from the team name for consistent colors
     let hash = 0;
     for (let i = 0; i < name.length; i++) {
       hash = name.charCodeAt(i) + ((hash << 5) - hash);
     }
     
-    // Use the hash to pick from a palette of nice colors
     const colors = [
       'bg-blue-500',
       'bg-purple-500',
@@ -136,7 +130,6 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
                     alt={match.homeTeam.name} 
                     className="w-[16px] h-[16px] object-contain"
                     onError={(e) => {
-                      // Hide image and show letter when it fails to load
                       const img = e.target as HTMLImageElement;
                       const parent = img.parentElement;
                       if (parent) {
@@ -206,7 +199,6 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
                     alt={match.awayTeam.name} 
                     className="w-[16px] h-[16px] object-contain"
                     onError={(e) => {
-                      // Hide image and show letter when it fails to load
                       const img = e.target as HTMLImageElement;
                       const parent = img.parentElement;
                       if (parent) {
