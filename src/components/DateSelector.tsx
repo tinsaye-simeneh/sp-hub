@@ -7,6 +7,7 @@ interface DateSelectorProps {
 
 const DateSelector: React.FC<DateSelectorProps> = ({ onDateChange: _onDateChange }) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const [pickerPosition, setPickerPosition] = useState({ top: 0, right: 0 });
   const pickerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -24,6 +25,13 @@ const DateSelector: React.FC<DateSelectorProps> = ({ onDateChange: _onDateChange
 
     if (isPickerOpen) {
       document.addEventListener('mousedown', handleClickOutside);
+      if (buttonRef.current) {
+        const rect = buttonRef.current.getBoundingClientRect();
+        setPickerPosition({
+          top: rect.bottom + 8,
+          right: window.innerWidth - rect.right,
+        });
+      }
     }
 
     return () => {
@@ -110,7 +118,7 @@ const DateSelector: React.FC<DateSelectorProps> = ({ onDateChange: _onDateChange
             </div>
           </div>
 
-          <div className="relative">
+          <div className="relative z-[110]">
             <button
               ref={buttonRef}
               onClick={() => setIsPickerOpen(!isPickerOpen)}
@@ -127,7 +135,11 @@ const DateSelector: React.FC<DateSelectorProps> = ({ onDateChange: _onDateChange
             {isPickerOpen && (
               <div
                 ref={pickerRef}
-                className="absolute right-0 top-full mt-2 bg-[#1D1E2B] rounded-lg shadow-lg p-4 z-[110] min-w-[280px]"
+                className="fixed md:absolute right-4 md:right-0 md:top-full md:mt-2 bg-[#1D1E2B] rounded-lg shadow-lg p-4 z-[110] min-w-[280px]"
+                style={{
+                  top: `${pickerPosition.top}px`,
+                  right: `${pickerPosition.right}px`,
+                }}
               >
                 <div className="mb-4">
                   <h3 className="text-text-primary text-lg font-semibold text-center">
@@ -148,6 +160,9 @@ const DateSelector: React.FC<DateSelectorProps> = ({ onDateChange: _onDateChange
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
+                        if (day !== null) {
+                          setIsPickerOpen(false);
+                        }
                       }}
                       className={`
                         w-8 h-8 rounded text-sm font-medium transition-colors cursor-pointer
