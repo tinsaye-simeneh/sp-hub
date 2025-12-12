@@ -202,10 +202,6 @@ The application is currently deployed on **Vercel** and is live at:
 
 Currently, no environment variables are required. The API key is included in the API base URL.
 
-## 📄 License
-
--
-
 ## 👤 Author
 
 Tinsaye Simeneh [https://github.com/tinsaye-simeneh](https://github.com/tinsaye-simeneh)
