@@ -6,7 +6,7 @@ A modern, pixel-perfect sports dashboard application that provides real-time mat
 
 **Deployed at:** [https://sp-hub.vercel.app](https://sp-hub.vercel.app)
 
-**Documentation:** [View Documentation](/docs) | [Live Docs](https://sp-hub.vercel.app/docs)
+**Documentation:** [Live Docs](https://sp-hub.vercel.app/docs)
 
 ## ✨ Features
 
